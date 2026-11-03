@@ -50,12 +50,11 @@
         .compact-settings { padding: 14px 20px; }
         .compact-settings .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 12px; }
 
-        .input-group { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+        .input-group { display: flex; flex-direction: column; gap: 4px; }
         .input-group label { font-size: 12px; font-weight: 500; color: #374151; }
         
         input[type="text"], input[type="number"], input[type="datetime-local"], input[type="time"], input[type="date"], select {
             padding: 8px 10px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 13px; font-family: inherit; background-color: #FAFAFA; transition: 0.2s;
-            width: 100%;
         }
         input:focus, select:focus { outline: none; border-color: var(--primary); background-color: #FFF; box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1); }
 
@@ -77,7 +76,7 @@
 
         .btn-add, .btn-export, .btn-import, .btn-download-ics, .btn-clear {
             padding: 6px 10px; border-radius: 6px; font-weight: 500; cursor: pointer; font-size: 12px;
-            display: flex; justify-content: center; align-items: center; gap: 4px; transition: 0.2s; white-space: nowrap;
+            display: flex; justify-content: center; align-items: center; gap: 4px; transition: 0.2s;
         }
         .btn-add { background-color: #EEF2FF; color: #4F46E5; border: 1px dashed #A5B4FC; }
         .btn-add:hover { background-color: #E0E7FF; }
@@ -91,8 +90,8 @@
         .btn-download-ics:hover { background-color: var(--primary-hover); transform: translateY(-1px); }
 
         .hidden { display: none !important; }
-        .input-with-suffix { display: flex; align-items: center; gap: 6px; width: 100%;}
-        .unit-text { font-size: 13px; font-weight: 500; color: #4B5563; min-width: 20px; flex-shrink: 0;}
+        .input-with-suffix { display: flex; align-items: center; gap: 6px; }
+        .unit-text { font-size: 13px; font-weight: 500; color: #4B5563; min-width: 20px;}
 
         .calendar-container { 
             background: #FFF; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); 
@@ -117,17 +116,16 @@
         .detail-title { font-size: 15px; font-weight: 700; margin-bottom: 12px; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px; position: sticky; top: 0; background: #FFF; z-index: 2; }
         .list-item { display: flex; align-items: flex-start; gap: 12px; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px; margin-bottom: 8px; background: #F9FAFB; }
         .item-time { font-weight: 700; color: var(--primary-hover); min-width: 45px; font-size: 13px; }
-        .item-info { flex: 1; min-width: 0; }
-        .item-name { font-weight: 600; font-size: 14px; margin-bottom: 2px; word-break: break-all;}
+        .item-info { flex: 1; }
+        .item-name { font-weight: 600; font-size: 14px; margin-bottom: 2px;}
         .item-desc { font-size: 12px; color: var(--text-muted); }
-        .item-note { font-size: 12px; color: #B45309; background: #FEF3C7; padding: 2px 6px; border-radius: 4px; margin-top: 4px; display: inline-block; word-break: break-all;}
+        .item-note { font-size: 12px; color: #B45309; background: #FEF3C7; padding: 2px 6px; border-radius: 4px; margin-top: 4px; display: inline-block;}
 
         .modal-overlay {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(2px);
             display: flex; justify-content: center; align-items: center; z-index: 1000;
             opacity: 0; transition: opacity 0.2s ease; pointer-events: none;
-            padding: 16px;
         }
         .modal-overlay.active { opacity: 1; pointer-events: auto; }
         
@@ -135,42 +133,36 @@
             background: #FFF; width: 100%; max-width: 680px; border-radius: 16px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.2); display: flex; flex-direction: column;
             max-height: 90vh; transform: translateY(20px); transition: transform 0.2s ease;
-            overflow: hidden;
         }
         .modal-overlay.active .modal-content { transform: translateY(0); }
         
-        .modal-header {
-            padding: 20px 24px; border-bottom: 1px solid var(--border-color);
-            display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;
-        }
+        .modal-header { padding: 20px 24px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
         .modal-title { font-size: 18px; font-weight: 700; }
         .btn-close { background: none; border: none; font-size: 24px; color: var(--text-muted); cursor: pointer; line-height: 1; }
         .btn-close:hover { color: var(--text-main); }
         
-        .modal-body { padding: 24px; overflow-y: auto; overflow-x: hidden; flex: 1; }
+        .modal-body { padding: 24px; overflow-y: auto; flex: 1; }
         
-        .modal-footer {
-            padding: 16px 24px; border-top: 1px solid var(--border-color);
-            display: flex; justify-content: flex-end; gap: 12px; flex-shrink: 0;
-        }
+        .modal-footer { padding: 16px 24px; border-top: 1px solid var(--border-color); display: flex; justify-content: flex-end; gap: 12px; }
         .btn-secondary { padding: 10px 24px; background: #F3F4F6; color: #374151; border: 1px solid #D1D5DB; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; }
         .btn-secondary:hover { background: #E5E7EB; }
-        .btn-primary { padding: 10px 24px; background: var(--primary); color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; box-shadow: 0 2px 5px rgba(16,185,129,0.3); white-space: nowrap;}
+        .btn-primary { padding: 10px 24px; background: var(--primary); color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; box-shadow: 0 2px 5px rgba(16,185,129,0.3); }
         .btn-primary:hover { background: var(--primary-hover); }
 
         .modal-body input[type="text"], .modal-body input[type="number"], .modal-body input[type="datetime-local"], .modal-body input[type="date"], .modal-body select {
-            padding: 10px 14px; border: 2px solid #E5E7EB; border-radius: 10px; font-size: 14px; background-color: #F9FAFB; width: 100%; min-width: 0;
+            padding: 10px 14px; border: 2px solid #E5E7EB; border-radius: 10px; font-size: 14px; background-color: #F9FAFB;
         }
         .modal-body input:focus, .modal-body select:focus {
             border-color: var(--primary); background-color: #FFF; box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
         }
-        .modal-body .input-group label { font-size: 13px; font-weight: 600; color: #4B5563; margin-bottom: 2px; }
+        .modal-body .input-group label {
+            font-size: 13px; font-weight: 600; color: #4B5563; margin-bottom: 2px;
+        }
 
-        .modal-body .freq-group { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 8px; }
+        .modal-body .freq-group { display: flex; flex-wrap: nowrap; gap: 10px; margin-top: 8px; }
         .modal-body .freq-label {
-            text-align: center; padding: 10px 0; background: #F9FAFB; border: 2px solid #E5E7EB; border-radius: 8px;
-            font-size: 13px; font-weight: 500; color: #4B5563; cursor: pointer; transition: 0.2s; position: relative;
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            flex: 1; text-align: center; padding: 10px 0; background: #F9FAFB; border: 2px solid #E5E7EB; border-radius: 8px;
+            font-size: 14px; font-weight: 500; color: #4B5563; cursor: pointer; transition: 0.2s; position: relative;
         }
         .modal-body .freq-label:hover { border-color: #D1D5DB; background: #F3F4F6; }
         .modal-body .freq-label input { display: none; }
@@ -178,7 +170,7 @@
             background: #ECFDF5; border-color: var(--primary); color: var(--primary-hover); font-weight: 600; box-shadow: 0 2px 8px rgba(16, 185, 129, 0.15);
         }
         .modal-body .freq-label:has(input:checked)::after {
-            content: '✓'; position: absolute; right: 6px; top: 50%; transform: translateY(-50%); font-size: 14px; color: var(--primary);
+            content: '✓'; position: absolute; right: 8px; top: 50%; transform: translateY(-50%); font-size: 14px; color: var(--primary);
         }
 
         .modal-body .weekday-group { display: flex; justify-content: space-between; gap: 4px; margin-top: 8px; }
@@ -201,10 +193,11 @@
             .left-panel, .right-panel { max-width: 100%; min-width: 100%; height: auto; }
             .med-list-scroll { overflow: visible; max-height: none; }
             .right-panel { min-height: 600px; margin-top: 20px;}
+            .modal-content { max-width: 95%; }
             
+            .modal-body .freq-group { flex-wrap: wrap; }
+            .modal-body .freq-label { flex: 1 1 40%; }
             .modal-row-3, .modal-row-2 { grid-template-columns: 1fr; gap: 12px;}
-            .modal-body .freq-group { grid-template-columns: repeat(2, 1fr); }
-            .modal-body .weekday-group { flex-wrap: wrap; justify-content: center; }
         }
     </style>
 </head>
@@ -216,6 +209,8 @@
             <div class="form-grid">
                 <div class="input-group"><label>文件名</label><input type="text" id="outputFilename" value="medication_plan.ics"></div>
                 <div class="input-group"><label>提前提醒(分)</label><input type="number" id="alarmMinutes" value="5" min="0"></div>
+            </div>
+            <div class="form-grid">
                 <div class="input-group"><label>早饭后</label><input type="time" id="time-morning" value="08:00" onchange="autoRefreshPreview()"></div>
                 <div class="input-group"><label>午饭后</label><input type="time" id="time-noon" value="12:30" onchange="autoRefreshPreview()"></div>
                 <div class="input-group"><label>晚饭后</label><input type="time" id="time-evening" value="18:30" onchange="autoRefreshPreview()"></div>
@@ -285,12 +280,12 @@
                     <label class="freq-label"><input type="checkbox" class="m-time" value="早饭后"> 早饭后</label>
                     <label class="freq-label"><input type="checkbox" class="m-time" value="午饭后"> 午饭后</label>
                     <label class="freq-label"><input type="checkbox" class="m-time" value="晚饭后"> 晚饭后</label>
-                    <label class="freq-label"><input type="checkbox" class="m-time" value="晚上/睡前"> 睡前</label>
+                    <label class="freq-label"><input type="checkbox" class="m-time" value="晚上/睡前"> 晚上/睡前</label>
                 </div>
             </div>
 
             <div style="background: #F9FAFB; padding: 16px; border-radius: 12px; border: 1px solid var(--border-color); margin-bottom: 20px;">
-                <div style="display: flex; gap: 16px; margin-bottom: 12px; align-items: flex-end;">
+                <div style="display: flex; gap: 16px; margin-bottom: 12px;">
                     <div class="input-group" style="flex: 1;">
                         <label>重复频率</label>
                         <select id="modalFreqType" onchange="updateModalFreqUI()">
@@ -301,8 +296,8 @@
                     </div>
                     <div class="input-group" style="flex: 1;">
                         <label>重复周期</label>
-                        <div class="input-with-suffix">
-                            每 <input type="number" id="modalInterval" value="1" min="1"> <span class="unit-text" id="modalUnitLabel">天</span>
+                        <div class="input-with-suffix" style="height: 100%;">
+                            每 <input type="number" id="modalInterval" value="1" min="1" style="width: 100%;"> <span class="unit-text" id="modalUnitLabel">天</span>
                         </div>
                     </div>
                 </div>
@@ -340,7 +335,7 @@
 
             <div class="input-group">
                 <label>医嘱备注</label>
-                <input type="text" id="modalNote" placeholder="如：注意复查血常规...">
+                <input type="text" id="modalNote" placeholder="如：注意复查血常规、出现肌肉酸痛停药...">
             </div>
         </div>
         <div class="modal-footer">
@@ -362,9 +357,11 @@
         autoRefreshPreview();
     };
 
+    // 强制解析日期字符串（支持 2023-11-05 08:00 或 2023/11/5 08:00）
     function parseLocalDate(str) {
         if(!str) return null;
         str = String(str).trim().replace('T', ' ').replace('null', '');
+        // 匹配 YYYY-MM-DD HH:mm 或 YYYY/MM/DD HH:mm
         const match = str.match(/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})[\s]+(\d{1,2}):(\d{1,2})/);
         if (match) {
             const y = parseInt(match[1]);
@@ -374,7 +371,7 @@
             const min = parseInt(match[5]);
             return new Date(y, m, d, h, min);
         }
-        return null;
+        return null; // 如果解析不出来，直接返回 null
     }
 
     function renderMedList() {
@@ -817,32 +814,6 @@
         listContainer.innerHTML = listHtml;
     }
 
-    // ==========================================
-    // 按照您的文档，彻底重构的时间格式化与 ICS 生成
-    // ==========================================
-
-    // 生成本地时区的时间字符串 (不带 Z) 例如: 20261103T000000
-    function formatDateToLocalString(date) {
-        const pad = (num) => String(num).padStart(2, '0');
-        return date.getFullYear() +
-               pad(date.getMonth() + 1) +
-               pad(date.getDate()) + 'T' +
-               pad(date.getHours()) +
-               pad(date.getMinutes()) +
-               pad(date.getSeconds());
-    }
-
-    // 生成 UTC 时间字符串 (带 Z)，仅供 DTSTAMP 使用
-    function formatDateToUTC(date) {
-        const pad = (num) => String(num).padStart(2, '0');
-        return date.getUTCFullYear() +
-               pad(date.getUTCMonth() + 1) +
-               pad(date.getUTCDate()) + 'T' +
-               pad(date.getUTCHours()) +
-               pad(date.getUTCMinutes()) +
-               pad(date.getUTCSeconds()) + 'Z';
-    }
-
     function generateICS() {
         extractData(); 
 
@@ -866,7 +837,11 @@
             if(!med.name || med.name === 'null' || med.name === 'undefined' || !med.times || med.times.length === 0) return;
 
             const safeStartDate = parseLocalDate(med.startLocal);
-            if (!safeStartDate) return;
+            // 如果解析失败，直接跳过这个药，绝不生成 00:00 的无效事件
+            if (!safeStartDate) {
+                console.warn(`跳过药品 ${med.name}，因为日期格式无法解析: ${med.startLocal}`);
+                return;
+            }
 
             let rruleExtra = "";
             if (med.freqType === 'WEEKLY' && med.weekDays && med.weekDays.length > 0) {
@@ -879,10 +854,7 @@
             let rruleEnd = "";
             if (med.endType === 'UNTIL' && med.endDateStr) {
                 let endDate = new Date(med.endDateStr + "T23:59:59");
-                if(!isNaN(endDate.getTime())) {
-                    // 【修复】UNTIL 去掉 Z，使用本地时间
-                    rruleEnd = `;UNTIL=${formatDateToLocalString(endDate)}`;
-                }
+                if(!isNaN(endDate.getTime())) rruleEnd = `;UNTIL=${formatDateToUTC(endDate)}`;
             } else if (med.endType === 'COUNT' && med.endCount) {
                 rruleEnd = `;COUNT=${med.endCount}`;
             }
@@ -902,6 +874,7 @@
                 const minute = parseInt(parts[1], 10);
                 if (isNaN(hour) || isNaN(minute)) return;
 
+                // 使用合法的解析时间
                 let dtStart = new Date(safeStartDate);
                 dtStart.setHours(hour, minute, 0, 0);
                 let dtEnd = new Date(dtStart.getTime() + 5 * 60000); 
@@ -909,16 +882,17 @@
                 const uid = Math.random().toString(36).substring(2) + "@medschedule";
                 const freqLabel = validFreq === 'DAILY' ? '天' : validFreq === 'WEEKLY' ? '周' : '月';
                 
-                // 【修复】DESCRIPTION 换行必须用字面的 \n，不能用真正的换行符
+                // 强制清洗 description，避免换行符引起解析异常
                 let descStr = `每次用量：${med.dose}\\n服药时间：${timeLabel}\\n服药周期：每 ${validInterval} ${freqLabel}`;
                 if (med.note) descStr += `\\n医嘱备注：${med.note}`;
+                descStr = descStr.replace(/[^\x20-\x7E\u4e00-\u9fa5\n\r\\:：,，。.、|]/g, ''); // 去除不可见字符
 
                 icsContent.push(
                     "BEGIN:VEVENT",
                     `UID:${uid}`,
-                    `DTSTAMP:${formatDateToUTC(new Date())}`, // DTSTAMP 必须是 UTC
-                    `DTSTART;TZID=Asia/Shanghai:${formatDateToLocalString(dtStart)}`, // 【修复】本地时间 + TZID
-                    `DTEND;TZID=Asia/Shanghai:${formatDateToLocalString(dtEnd)}`,     // 【修复】本地时间 + TZID
+                    `DTSTAMP:${formatDateToUTC(new Date())}`,
+                    `DTSTART:${formatDateToUTC(dtStart)}`,
+                    `DTEND:${formatDateToUTC(dtEnd)}`,
                     `SUMMARY:💊 ${med.name}`,
                     `DESCRIPTION:${descStr}`,
                     rruleString,
@@ -946,7 +920,11 @@
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        alert(`✅ 成功生成日历文件，共包含 ${eventCount} 个事件。\n\n⚠️ 提示：请在手机日历中删除旧的出问题的日历，再导入此新文件。`);
+        alert(`✅ 成功生成日历文件，共包含 ${eventCount} 个事件。\n\n⚠️ 提示：如果您的手机里还残留着旧版本的日历事件，请先在手机日历中删除该日历账户，再重新导入此文件，以清除幽灵事件。`);
+    }
+
+    function formatDateToUTC(date) {
+        return date.getUTCFullYear() + ('0' + (date.getUTCMonth() + 1)).slice(-2) + ('0' + date.getUTCDate()).slice(-2) + 'T' + ('0' + date.getUTCHours()).slice(-2) + ('0' + date.getUTCMinutes()).slice(-2) + ('0' + date.getUTCSeconds()).slice(-2) + 'Z';
     }
 </script>
 </body>
