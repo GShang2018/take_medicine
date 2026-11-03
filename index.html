@@ -25,14 +25,9 @@
             line-height: 1.6; height: 100vh; overflow: hidden; 
         }
 
-        .dashboard { 
-            display: flex; height: 100vh; gap: 24px; padding: 24px; 
-            width: 100%; max-width: 1600px; margin: 0 auto;
-        }
+        .dashboard { display: flex; height: 100vh; gap: 24px; padding: 24px; width: 100%; max-width: 1600px; margin: 0 auto; }
         
-        /* 左侧面板：变宽，且去掉最大宽度限制 */
         .left-panel { flex: 1.2; display: flex; flex-direction: column; height: 100%; overflow: hidden; min-width: 460px; }
-        /* 右侧面板：限制最大宽度，防止大屏拉太长 */
         .right-panel { flex: 1; display: flex; flex-direction: column; height: 100%; min-width: 400px; max-width: 820px; }
 
         .left-scroll-area { flex: 1; display: flex; flex-direction: column; min-height: 0; margin-bottom: 0 !important; }
@@ -52,23 +47,18 @@
         
         .section-title-actions { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
 
-        /* 紧凑型设置区 */
         .compact-settings { padding: 14px 20px; }
-        .compact-settings .form-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); 
-            gap: 12px; 
-        }
+        .compact-settings .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 12px; }
 
-        .input-group { display: flex; flex-direction: column; gap: 4px; }
+        .input-group { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
         .input-group label { font-size: 12px; font-weight: 500; color: #374151; }
         
         input[type="text"], input[type="number"], input[type="datetime-local"], input[type="time"], input[type="date"], select {
             padding: 8px 10px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 13px; font-family: inherit; background-color: #FAFAFA; transition: 0.2s;
+            width: 100%; /* 确保填满且不超框 */
         }
         input:focus, select:focus { outline: none; border-color: var(--primary); background-color: #FFF; box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1); }
 
-        /* 左侧列表项 */
         .med-item {
             background: #FFF; border: 1px solid var(--border-color); border-radius: var(--radius);
             margin-bottom: 8px; padding: 12px 16px; cursor: pointer; transition: 0.2s;
@@ -85,31 +75,25 @@
         .btn-del-item { background: none; border: none; color: #9CA3AF; cursor: pointer; padding: 6px; border-radius: 6px; font-size: 16px; transition: 0.2s;}
         .btn-del-item:hover { color: var(--danger); background: var(--danger-bg); }
 
-        /* 按钮通用样式 */
         .btn-add, .btn-export, .btn-import, .btn-download-ics, .btn-clear {
             padding: 6px 10px; border-radius: 6px; font-weight: 500; cursor: pointer; font-size: 12px;
-            display: flex; justify-content: center; align-items: center; gap: 4px; transition: 0.2s;
+            display: flex; justify-content: center; align-items: center; gap: 4px; transition: 0.2s; white-space: nowrap;
         }
         .btn-add { background-color: #EEF2FF; color: #4F46E5; border: 1px dashed #A5B4FC; }
         .btn-add:hover { background-color: #E0E7FF; }
-        
         .btn-import { background-color: #FFFBEB; color: #92400E; border: 1px solid #FCD34D; }
         .btn-import:hover { background-color: #FEF3C7; }
-        
         .btn-export { background-color: #F0FDF4; color: #166534; border: 1px solid #86EFAC; }
         .btn-export:hover { background-color: #DCFCE7; }
-        
         .btn-clear { background-color: #FEF2F2; color: #B91C1C; border: 1px solid #FCA5A5; }
         .btn-clear:hover { background-color: #FEE2E2; }
-        
         .btn-download-ics { background-color: var(--primary); color: white; border: 1px solid var(--primary); box-shadow: 0 2px 5px rgba(16,185,129,0.3); }
         .btn-download-ics:hover { background-color: var(--primary-hover); transform: translateY(-1px); }
 
         .hidden { display: none !important; }
-        .input-with-suffix { display: flex; align-items: center; gap: 6px; }
-        .unit-text { font-size: 13px; font-weight: 500; color: #4B5563; min-width: 20px;}
+        .input-with-suffix { display: flex; align-items: center; gap: 6px; width: 100%;}
+        .unit-text { font-size: 13px; font-weight: 500; color: #4B5563; min-width: 20px; flex-shrink: 0;}
 
-        /* 右侧面板 日历 */
         .calendar-container { 
             background: #FFF; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); 
             border: 1px solid var(--border-color); display: flex; flex-direction: column; flex: 1; overflow: hidden;
@@ -133,10 +117,10 @@
         .detail-title { font-size: 15px; font-weight: 700; margin-bottom: 12px; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px; position: sticky; top: 0; background: #FFF; z-index: 2; }
         .list-item { display: flex; align-items: flex-start; gap: 12px; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px; margin-bottom: 8px; background: #F9FAFB; }
         .item-time { font-weight: 700; color: var(--primary-hover); min-width: 45px; font-size: 13px; }
-        .item-info { flex: 1; }
-        .item-name { font-weight: 600; font-size: 14px; margin-bottom: 2px;}
+        .item-info { flex: 1; min-width: 0; }
+        .item-name { font-weight: 600; font-size: 14px; margin-bottom: 2px; word-break: break-all;}
         .item-desc { font-size: 12px; color: var(--text-muted); }
-        .item-note { font-size: 12px; color: #B45309; background: #FEF3C7; padding: 2px 6px; border-radius: 4px; margin-top: 4px; display: inline-block;}
+        .item-note { font-size: 12px; color: #B45309; background: #FEF3C7; padding: 2px 6px; border-radius: 4px; margin-top: 4px; display: inline-block; word-break: break-all;}
 
         /* 模态框 (Modal) 样式 */
         .modal-overlay {
@@ -144,6 +128,7 @@
             background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(2px);
             display: flex; justify-content: center; align-items: center; z-index: 1000;
             opacity: 0; transition: opacity 0.2s ease; pointer-events: none;
+            padding: 16px; /* 防止在小屏上贴边 */
         }
         .modal-overlay.active { opacity: 1; pointer-events: auto; }
         
@@ -151,26 +136,27 @@
             background: #FFF; width: 100%; max-width: 680px; border-radius: 16px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.2); display: flex; flex-direction: column;
             max-height: 90vh; transform: translateY(20px); transition: transform 0.2s ease;
+            overflow: hidden; /* 绝对防止内部元素撑破外框 */
         }
         .modal-overlay.active .modal-content { transform: translateY(0); }
         
         .modal-header {
             padding: 20px 24px; border-bottom: 1px solid var(--border-color);
-            display: flex; justify-content: space-between; align-items: center;
+            display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;
         }
         .modal-title { font-size: 18px; font-weight: 700; }
         .btn-close { background: none; border: none; font-size: 24px; color: var(--text-muted); cursor: pointer; line-height: 1; }
         .btn-close:hover { color: var(--text-main); }
         
-        .modal-body { padding: 24px; overflow-y: auto; flex: 1; }
+        .modal-body { padding: 24px; overflow-y: auto; overflow-x: hidden; flex: 1; }
         
         .modal-footer {
             padding: 16px 24px; border-top: 1px solid var(--border-color);
-            display: flex; justify-content: flex-end; gap: 12px;
+            display: flex; justify-content: flex-end; gap: 12px; flex-shrink: 0;
         }
         .btn-secondary { padding: 10px 24px; background: #F3F4F6; color: #374151; border: 1px solid #D1D5DB; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; }
         .btn-secondary:hover { background: #E5E7EB; }
-        .btn-primary { padding: 10px 24px; background: var(--primary); color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; box-shadow: 0 2px 5px rgba(16,185,129,0.3); }
+        .btn-primary { padding: 10px 24px; background: var(--primary); color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; box-shadow: 0 2px 5px rgba(16,185,129,0.3); white-space: nowrap;}
         .btn-primary:hover { background: var(--primary-hover); }
 
         /* 弹窗专属输入框美化 */
@@ -180,6 +166,7 @@
         .modal-body input[type="date"], 
         .modal-body select {
             padding: 10px 14px; border: 2px solid #E5E7EB; border-radius: 10px; font-size: 14px; background-color: #F9FAFB;
+            width: 100%; min-width: 0; /* 关键：防止原生的datetime-local撑破网格 */
         }
         .modal-body input:focus, .modal-body select:focus {
             border-color: var(--primary); background-color: #FFF; box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
@@ -188,11 +175,17 @@
             font-size: 13px; font-weight: 600; color: #4B5563; margin-bottom: 2px;
         }
 
-        /* 服药时间多选 */
-        .modal-body .freq-group { display: flex; flex-wrap: nowrap; gap: 10px; margin-top: 8px; }
+        /* 服药时间多选：采用 grid 保证绝不溢出 */
+        .modal-body .freq-group { 
+            display: grid; 
+            grid-template-columns: repeat(4, 1fr); 
+            gap: 10px; 
+            margin-top: 8px; 
+        }
         .modal-body .freq-label {
-            flex: 1; text-align: center; padding: 10px 0; background: #F9FAFB; border: 2px solid #E5E7EB; border-radius: 8px;
-            font-size: 14px; font-weight: 500; color: #4B5563; cursor: pointer; transition: 0.2s; position: relative;
+            text-align: center; padding: 10px 0; background: #F9FAFB; border: 2px solid #E5E7EB; border-radius: 8px;
+            font-size: 13px; font-weight: 500; color: #4B5563; cursor: pointer; transition: 0.2s; position: relative;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
         }
         .modal-body .freq-label:hover { border-color: #D1D5DB; background: #F3F4F6; }
         .modal-body .freq-label input { display: none; }
@@ -200,10 +193,10 @@
             background: #ECFDF5; border-color: var(--primary); color: var(--primary-hover); font-weight: 600; box-shadow: 0 2px 8px rgba(16, 185, 129, 0.15);
         }
         .modal-body .freq-label:has(input:checked)::after {
-            content: '✓'; position: absolute; right: 8px; top: 50%; transform: translateY(-50%); font-size: 14px; color: var(--primary);
+            content: '✓'; position: absolute; right: 6px; top: 50%; transform: translateY(-50%); font-size: 14px; color: var(--primary);
         }
 
-        /* 星期几多选 */
+        /* 星期几多选：自适应均分，防溢出 */
         .modal-body .weekday-group { display: flex; justify-content: space-between; gap: 4px; margin-top: 8px; }
         .modal-body .weekday-label {
             width: 38px; height: 38px; border-radius: 50%; background: #F9FAFB; border: 2px solid #E5E7EB;
@@ -215,20 +208,21 @@
             background: #4F46E5; color: white; border-color: #4F46E5; box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
         }
 
+        /* 网格子项允许收缩 */
         .modal-row-3 { display: grid; grid-template-columns: 2fr 1.5fr 1.5fr; gap: 16px; margin-bottom: 20px;}
         .modal-row-2 { display: grid; grid-template-columns: 1.5fr 2fr; gap: 16px; margin-bottom: 20px;}
 
+        /* 响应式 */
         @media (max-width: 900px) {
             body { overflow: auto; height: auto; }
             .dashboard { flex-direction: column; height: auto; padding: 16px; }
             .left-panel, .right-panel { max-width: 100%; min-width: 100%; height: auto; }
             .med-list-scroll { overflow: visible; max-height: none; }
             .right-panel { min-height: 600px; margin-top: 20px;}
-            .modal-content { max-width: 95%; }
             
-            .modal-body .freq-group { flex-wrap: wrap; }
-            .modal-body .freq-label { flex: 1 1 40%; }
             .modal-row-3, .modal-row-2 { grid-template-columns: 1fr; gap: 12px;}
+            .modal-body .freq-group { grid-template-columns: repeat(2, 1fr); }
+            .modal-body .weekday-group { flex-wrap: wrap; justify-content: center; }
         }
     </style>
 </head>
@@ -236,7 +230,6 @@
 
 <div class="dashboard">
     <div class="left-panel">
-        <!-- 合并后的紧凑设置区 -->
         <div class="section-card compact-settings">
             <div class="form-grid">
                 <div class="input-group"><label>文件名</label><input type="text" id="outputFilename" value="medication_plan.ics"></div>
@@ -248,7 +241,6 @@
             </div>
         </div>
 
-        <!-- 药品清单占满剩余高度 -->
         <div class="section-card left-scroll-area">
             <div class="section-title">
                 <span>💊 药品清单</span>
@@ -282,7 +274,6 @@
     </div>
 </div>
 
-<!-- 药品编辑模态框 -->
 <div class="modal-overlay" id="medModal">
     <div class="modal-content">
         <div class="modal-header">
@@ -312,12 +303,12 @@
                     <label class="freq-label"><input type="checkbox" class="m-time" value="早饭后"> 早饭后</label>
                     <label class="freq-label"><input type="checkbox" class="m-time" value="午饭后"> 午饭后</label>
                     <label class="freq-label"><input type="checkbox" class="m-time" value="晚饭后"> 晚饭后</label>
-                    <label class="freq-label"><input type="checkbox" class="m-time" value="晚上/睡前"> 晚上/睡前</label>
+                    <label class="freq-label"><input type="checkbox" class="m-time" value="晚上/睡前"> 睡前</label>
                 </div>
             </div>
 
             <div style="background: #F9FAFB; padding: 16px; border-radius: 12px; border: 1px solid var(--border-color); margin-bottom: 20px;">
-                <div style="display: flex; gap: 16px; margin-bottom: 12px;">
+                <div style="display: flex; gap: 16px; margin-bottom: 12px; align-items: flex-end;">
                     <div class="input-group" style="flex: 1;">
                         <label>重复频率</label>
                         <select id="modalFreqType" onchange="updateModalFreqUI()">
@@ -328,8 +319,8 @@
                     </div>
                     <div class="input-group" style="flex: 1;">
                         <label>重复周期</label>
-                        <div class="input-with-suffix" style="height: 100%;">
-                            每 <input type="number" id="modalInterval" value="1" min="1" style="width: 100%;"> <span class="unit-text" id="modalUnitLabel">天</span>
+                        <div class="input-with-suffix">
+                            每 <input type="number" id="modalInterval" value="1" min="1"> <span class="unit-text" id="modalUnitLabel">天</span>
                         </div>
                     </div>
                 </div>
@@ -367,7 +358,7 @@
 
             <div class="input-group">
                 <label>医嘱备注</label>
-                <input type="text" id="modalNote" placeholder="如：注意复查血常规、出现肌肉酸痛停药...">
+                <input type="text" id="modalNote" placeholder="如：注意复查血常规...">
             </div>
         </div>
         <div class="modal-footer">
@@ -389,6 +380,22 @@
         autoRefreshPreview();
     };
 
+    // 强制解析日期字符串（支持 2023-11-05 08:00 或 2023/11/5 08:00）
+    function parseLocalDate(str) {
+        if(!str) return null;
+        str = String(str).trim().replace('T', ' ').replace('null', '');
+        const match = str.match(/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})[\s]+(\d{1,2}):(\d{1,2})/);
+        if (match) {
+            const y = parseInt(match[1]);
+            const m = parseInt(match[2]) - 1;
+            const d = parseInt(match[3]);
+            const h = parseInt(match[4]);
+            const min = parseInt(match[5]);
+            return new Date(y, m, d, h, min);
+        }
+        return null;
+    }
+
     function renderMedList() {
         const container = document.getElementById('medListContainer');
         container.innerHTML = '';
@@ -399,7 +406,6 @@
         }
 
         medsData.forEach((med, index) => {
-            // 容错：如果是异常数据，不展示在 UI 列表里
             if(!med.name || med.name === 'null') return; 
 
             const timeStr = med.times.length > 0 ? med.times.join('、') : '未选时间';
@@ -605,7 +611,6 @@
                 if (row.length < 3) continue; 
 
                 const name = (row[0] || '').trim();
-                // 【严格拦截】过滤掉无名字、或者名字叫 "null" 的幽灵数据
                 if (!name || name === 'null' || name === 'undefined') continue;
 
                 const dose = (row[1] || '').trim();
@@ -620,16 +625,8 @@
                 let startTime = (row[10] || '').trim();
                 const note = (row[11] || '').trim();
 
-                if (startTime.includes('/')) {
-                    const d = new Date(startTime);
-                    if(!isNaN(d.getTime())) {
-                        const tzoffset = (new Date()).getTimezoneOffset() * 60000;
-                        startTime = (new Date(d - tzoffset)).toISOString().slice(0, 16).replace('T', ' ');
-                    }
-                }
-
                 const timesList = timesStr ? timesStr.split(/[、,，]/) : [];
-                if(timesList.length === 0) continue; // 必须要有服药时间
+                if(timesList.length === 0) continue;
 
                 let freqType = "DAILY";
                 if (freqStr.includes("周")) freqType = "WEEKLY";
@@ -653,7 +650,7 @@
             }
 
             if(newMeds.length === 0) {
-                alert("导入失败：表格中未能解析出有效的药品数据。请检查表头和内容是否完整。");
+                alert("导入失败：未能解析出有效的药品数据。");
                 return;
             }
 
@@ -693,8 +690,7 @@
         medsData.forEach(med => {
             if(!med.name || med.name === 'null' || !med.times || med.times.length === 0) return;
 
-            const startBase = new Date(med.startLocal);
-            const safeStartBase = isNaN(startBase.getTime()) ? new Date() : startBase;
+            const safeStartBase = parseLocalDate(med.startLocal) || new Date();
             
             let isMatch = false;
             const diffTime = targetDate.getTime() - new Date(safeStartBase.getFullYear(), safeStartBase.getMonth(), safeStartBase.getDate()).getTime();
@@ -728,8 +724,8 @@
                     const timeStr = dailyTimesConfig[timeLabel];
                     if(timeStr && timeStr.includes(':')) {
                         const parts = timeStr.split(':');
-                        const h = parseInt(parts[0]);
-                        const m = parseInt(parts[1]);
+                        const h = parseInt(parts[0], 10);
+                        const m = parseInt(parts[1], 10);
                         if (isNaN(h) || isNaN(m)) return;
 
                         let dtStart = new Date(targetDate);
@@ -848,12 +844,26 @@
 
         if(medsData.length === 0) { alert("请先添加有效的药品配置！"); return; }
 
-        let icsContent = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Medication Web Generator//CN", "CALSCALE:GREGORIAN", "METHOD:PUBLISH"];
+        let icsContent = [
+            "BEGIN:VCALENDAR",
+            "VERSION:2.0",
+            "PRODID:-//Medication Web Generator//CN",
+            "CALSCALE:GREGORIAN",
+            "METHOD:PUBLISH",
+            "X-WR-CALNAME:服药日历",
+            "X-WR-TIMEZONE:Asia/Shanghai"
+        ];
         let eventCount = 0;
 
         medsData.forEach((med) => {
-            // 【深度拦截】过滤无效数据
-            if(!med.name || med.name === 'null' || !med.times || med.times.length === 0) return;
+            if(!med.name || med.name === 'null' || med.name === 'undefined' || !med.times || med.times.length === 0) return;
+
+            const safeStartDate = parseLocalDate(med.startLocal);
+            // 如果解析失败，直接跳过这个药，绝不生成 00:00 的无效事件
+            if (!safeStartDate) {
+                console.warn(`跳过药品 ${med.name}，因为日期格式无法解析: ${med.startLocal}`);
+                return;
+            }
 
             let rruleExtra = "";
             if (med.freqType === 'WEEKLY' && med.weekDays && med.weekDays.length > 0) {
@@ -879,28 +889,23 @@
 
             med.times.forEach(timeLabel => {
                 const timeStr = dailyTimesConfig[timeLabel];
-                // 时间必须存在且包含冒号
                 if(!timeStr || typeof timeStr !== 'string' || !timeStr.includes(':')) return;
 
                 const parts = timeStr.split(':');
                 const hour = parseInt(parts[0], 10);
                 const minute = parseInt(parts[1], 10);
-                if (isNaN(hour) || isNaN(minute)) return; // 解析失败跳过
+                if (isNaN(hour) || isNaN(minute)) return;
 
-                let baseStartStr = med.startLocal || new Date().toISOString().slice(0,16);
-                let dtStart = new Date(baseStartStr);
-                
-                // 如果日期彻底无效，以今天为起点
-                if(isNaN(dtStart.getTime())) dtStart = new Date();
-
+                let dtStart = new Date(safeStartDate);
                 dtStart.setHours(hour, minute, 0, 0);
                 let dtEnd = new Date(dtStart.getTime() + 5 * 60000); 
 
                 const uid = Math.random().toString(36).substring(2) + "@medschedule";
                 const freqLabel = validFreq === 'DAILY' ? '天' : validFreq === 'WEEKLY' ? '周' : '月';
                 
-                let description = `每次用量：${med.dose}\\n服药时间：${timeLabel}\\n服药周期：每 ${validInterval} ${freqLabel}`;
-                if (med.note) description += `\\n医嘱备注：${med.note}`;
+                let descStr = `每次用量：${med.dose}\\n服药时间：${timeLabel}\\n服药周期：每 ${validInterval} ${freqLabel}`;
+                if (med.note) descStr += `\\n医嘱备注：${med.note}`;
+                descStr = descStr.replace(/[^\x20-\x7E\u4e00-\u9fa5\n\r\\:：,，。.、|]/g, ''); 
 
                 icsContent.push(
                     "BEGIN:VEVENT",
@@ -909,7 +914,7 @@
                     `DTSTART:${formatDateToUTC(dtStart)}`,
                     `DTEND:${formatDateToUTC(dtEnd)}`,
                     `SUMMARY:💊 ${med.name}`,
-                    `DESCRIPTION:${description}`,
+                    `DESCRIPTION:${descStr}`,
                     rruleString,
                     "BEGIN:VALARM",
                     "ACTION:DISPLAY",
@@ -923,7 +928,7 @@
         });
 
         if(eventCount === 0) {
-            alert("生成的日历中没有任何有效事件！请检查药品名称是否为空，或者是否勾选了服药时间。");
+            alert("生成的日历中没有任何有效事件！请检查药品的开始时间格式是否正确。");
             return;
         }
 
@@ -935,7 +940,7 @@
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        alert(`✅ 成功生成日历文件，共包含 ${eventCount} 个有效事件。`);
+        alert(`✅ 成功生成日历文件，共包含 ${eventCount} 个事件。\n\n⚠️ 提示：如果您的手机里还残留着旧版本的日历事件，请先在手机日历中删除该日历账户，再重新导入此文件。`);
     }
 
     function formatDateToUTC(date) {
