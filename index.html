@@ -25,11 +25,16 @@
             line-height: 1.6; height: 100vh; overflow: hidden; 
         }
 
-        .dashboard { display: flex; height: 100vh; gap: 24px; padding: 24px; max-width: 1600px; margin: 0 auto; }
+        .dashboard { 
+            display: flex; height: 100vh; gap: 24px; padding: 24px; 
+            width: 100%; max-width: 1600px; margin: 0 auto;
+        }
         
-        /* 左侧面板 */
-        .left-panel { flex: 1.2; display: flex; flex-direction: column; height: 100%; overflow: hidden; min-width: 380px; }
-        .left-fixed-area { flex-shrink: 0; }
+        /* 左侧面板：变宽，且去掉最大宽度限制 */
+        .left-panel { flex: 1.2; display: flex; flex-direction: column; height: 100%; overflow: hidden; min-width: 460px; }
+        /* 右侧面板：限制最大宽度，防止大屏拉太长 */
+        .right-panel { flex: 1; display: flex; flex-direction: column; height: 100%; min-width: 400px; max-width: 820px; }
+
         .left-scroll-area { flex: 1; display: flex; flex-direction: column; min-height: 0; margin-bottom: 0 !important; }
         
         .med-list-scroll { flex: 1; overflow-y: auto; padding-right: 8px; margin-top: 10px; scrollbar-width: thin; }
@@ -37,95 +42,78 @@
         .med-list-scroll::-webkit-scrollbar-thumb { background: #D1D5DB; border-radius: 4px; }
 
         .section-card {
-            background: var(--card-bg); border-radius: var(--radius); padding: 20px; margin-bottom: 20px;
+            background: var(--card-bg); border-radius: var(--radius); padding: 16px 20px; margin-bottom: 16px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid var(--border-color);
         }
         .section-title {
             font-size: 16px; font-weight: 700; margin-bottom: 12px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;
-            display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;
+            display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; flex-wrap: wrap; gap: 8px;
         }
-        .section-title-actions { display: flex; gap: 8px; }
+        
+        .section-title-actions { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
 
-        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
+        /* 紧凑型设置区，让药品清单更高 */
+        .compact-settings { padding: 14px 20px; }
+        .compact-settings .form-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); 
+            gap: 12px; 
+        }
+
         .input-group { display: flex; flex-direction: column; gap: 4px; }
         .input-group label { font-size: 12px; font-weight: 500; color: #374151; }
+        
         input[type="text"], input[type="number"], input[type="datetime-local"], input[type="time"], input[type="date"], select {
             padding: 8px 10px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 13px; font-family: inherit; background-color: #FAFAFA; transition: 0.2s;
         }
         input:focus, select:focus { outline: none; border-color: var(--primary); background-color: #FFF; box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1); }
 
-        /* 药品卡片折叠布局 */
-        .med-card {
+        /* 左侧列表项 */
+        .med-item {
             background: #FFF; border: 1px solid var(--border-color); border-radius: var(--radius);
-            margin-bottom: 12px; position: relative; border-left: 4px solid var(--primary); transition: 0.2s;
+            margin-bottom: 8px; padding: 12px 16px; cursor: pointer; transition: 0.2s;
+            display: flex; align-items: center; gap: 10px; border-left: 4px solid var(--primary);
         }
-        .med-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .med-item:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.05); transform: translateY(-1px); }
         
-        .card-header {
-            display: flex; align-items: center; padding: 12px 16px; cursor: pointer; user-select: none; gap: 10px;
-        }
-        .collapse-icon { font-size: 12px; color: var(--text-muted); transition: transform 0.2s; width: 12px; flex-shrink: 0;}
-        .med-card.collapsed .collapse-icon { transform: rotate(-90deg); }
+        .med-item-info { flex: 1; min-width: 0; }
+        .med-item-title { display: flex; align-items: baseline; gap: 8px; margin-bottom: 2px;}
+        .med-item-name { font-weight: 600; font-size: 15px; color: #1F2937; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .med-item-dose { font-size: 13px; color: var(--text-muted); white-space: nowrap; }
+        .med-item-summary { font-size: 12px; color: #6B7280; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         
-        .header-title-group { display: flex; align-items: baseline; gap: 8px; flex: 1; min-width: 0; }
-        .header-name { font-weight: 600; font-size: 15px; color: #1F2937; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .header-dose { font-size: 13px; color: var(--text-muted); white-space: nowrap; flex-shrink: 0;}
-        
-        .header-summary { 
-            font-size: 12px; color: #6B7280; background: #F3F4F6; padding: 4px 10px; border-radius: 6px;
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 55%; 
-            display: none; flex-shrink: 1; border: 1px solid #E5E7EB;
-        }
-        
-        .med-card.collapsed .header-summary { display: block; }
-        .med-card.collapsed .card-body { display: none; }
-        
-        .card-body { padding: 0 16px 16px 16px; display: block; animation: slideDown 0.2s ease; border-top: 1px dashed var(--border-color); margin-top: 4px; padding-top: 12px;}
-        @keyframes slideDown { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+        .btn-del-item { background: none; border: none; color: #9CA3AF; cursor: pointer; padding: 6px; border-radius: 6px; font-size: 16px; transition: 0.2s;}
+        .btn-del-item:hover { color: var(--danger); background: var(--danger-bg); }
 
-        .btn-del { background: none; border: none; color: #9CA3AF; cursor: pointer; padding: 4px; border-radius: 6px; font-size: 16px; z-index: 2; margin-left: 6px; flex-shrink: 0;}
-        .btn-del:hover { color: var(--danger); background: var(--danger-bg); }
-
-        .freq-group { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
-        .freq-label {
-            display: inline-flex; align-items: center; padding: 4px 10px; background: #FFF; border: 1px solid var(--border-color); border-radius: 16px;
-            font-size: 12px; cursor: pointer; user-select: none; transition: 0.2s;
+        /* 按钮通用样式 */
+        .btn-add, .btn-export, .btn-import, .btn-download-ics, .btn-clear {
+            padding: 6px 10px; border-radius: 6px; font-weight: 500; cursor: pointer; font-size: 12px;
+            display: flex; justify-content: center; align-items: center; gap: 4px; transition: 0.2s;
         }
-        .freq-label input { display: none; }
-        .freq-label:has(input:checked) { background: var(--primary); color: #FFF; border-color: var(--primary); }
-
-        .weekday-group { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 5px; }
-        .weekday-label {
-            width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: #FFF; border: 1px solid var(--border-color);
-            font-size: 11px; cursor: pointer; user-select: none;
-        }
-        .weekday-label input { display: none; }
-        .weekday-label:has(input:checked) { background: #4F46E5; color: #FFF; border-color: #4F46E5; }
-
-        .btn-add, .btn-export, .btn-import {
-            background-color: #EEF2FF; color: #4F46E5; border: 1px dashed #A5B4FC; padding: 6px 10px; border-radius: 6px; font-weight: 500; cursor: pointer;
-            display: flex; justify-content: center; align-items: center; gap: 4px; font-size: 12px; transition: 0.2s;
-        }
-        .btn-export { background-color: #F0FDF4; color: #166534; border-color: #86EFAC; border-style: solid;}
-        .btn-import { background-color: #FFFBEB; color: #92400E; border-color: #FCD34D; border-style: solid;}
+        .btn-add { background-color: #EEF2FF; color: #4F46E5; border: 1px dashed #A5B4FC; }
         .btn-add:hover { background-color: #E0E7FF; }
-        .btn-export:hover { background-color: #DCFCE7; }
+        
+        .btn-import { background-color: #FFFBEB; color: #92400E; border: 1px solid #FCD34D; }
         .btn-import:hover { background-color: #FEF3C7; }
+        
+        .btn-export { background-color: #F0FDF4; color: #166534; border: 1px solid #86EFAC; }
+        .btn-export:hover { background-color: #DCFCE7; }
+        
+        .btn-clear { background-color: #FEF2F2; color: #B91C1C; border: 1px solid #FCA5A5; }
+        .btn-clear:hover { background-color: #FEE2E2; }
+        
+        .btn-download-ics { background-color: var(--primary); color: white; border: 1px solid var(--primary); box-shadow: 0 2px 5px rgba(16,185,129,0.3); }
+        .btn-download-ics:hover { background-color: var(--primary-hover); transform: translateY(-1px); }
 
         .hidden { display: none !important; }
         .input-with-suffix { display: flex; align-items: center; gap: 6px; }
         .unit-text { font-size: 13px; font-weight: 500; color: #4B5563; min-width: 20px;}
 
-        /* 右侧面板 */
-        .right-panel { flex: 1; display: flex; flex-direction: column; gap: 16px; height: 100%; min-width: 400px; }
-        .action-buttons { display: flex; gap: 12px; flex-shrink: 0; }
-        .btn-action {
-            flex: 1; padding: 14px; font-size: 16px; font-weight: bold; border-radius: 12px; cursor: pointer; border: none; transition: 0.2s; display: flex; justify-content: center; align-items: center; gap: 8px;
+        /* 右侧面板 日历 */
+        .calendar-container { 
+            background: #FFF; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); 
+            border: 1px solid var(--border-color); display: flex; flex-direction: column; flex: 1; overflow: hidden;
         }
-        .btn-submit { background-color: var(--primary); color: white; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); }
-        .btn-submit:hover { background-color: var(--primary-hover); transform: translateY(-2px); }
-
-        .calendar-container { background: #FFF; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid var(--border-color); display: flex; flex-direction: column; flex: 1; overflow: hidden; }
         .cal-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 1px solid var(--border-color); background: #FAFAFA; }
         .cal-title { font-size: 18px; font-weight: 700; color: #1F2937; }
         .cal-nav-btn { background: #FFF; border: 1px solid var(--border-color); width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 18px; }
@@ -140,22 +128,107 @@
         .day-cell.today .day-num { background: var(--primary); color: white; }
         .event-dots { display: flex; gap: 3px; flex-wrap: wrap; margin-top: auto; }
         .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--primary); }
-        .day-detail-list { padding: 16px; background: #FFF; overflow-y: auto; flex: 1; }
-        .detail-title { font-size: 15px; font-weight: 700; margin-bottom: 12px; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px; position: sticky; top: 0; background: #FFF; z-index: 2; }
+        
+        .day-detail-list { padding: 0 16px; background: #FFF; overflow-y: auto; flex: 1; }
+        .detail-title { font-size: 15px; font-weight: 700; padding:16px 0; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px; position: sticky; top: 0; background: #FFF; z-index: 2; }
         .list-item { display: flex; align-items: flex-start; gap: 12px; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px; margin-bottom: 8px; background: #F9FAFB; }
         .item-time { font-weight: 700; color: var(--primary-hover); min-width: 45px; font-size: 13px; }
         .item-info { flex: 1; }
         .item-name { font-weight: 600; font-size: 14px; margin-bottom: 2px;}
         .item-desc { font-size: 12px; color: var(--text-muted); }
+        .item-note { font-size: 12px; color: #B45309; background: #FEF3C7; padding: 2px 6px; border-radius: 4px; margin-top: 4px; display: inline-block;}
+
+        /* 模态框 (Modal) 样式 */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(2px);
+            display: flex; justify-content: center; align-items: center; z-index: 1000;
+            opacity: 0; transition: opacity 0.2s ease; pointer-events: none;
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        
+        .modal-content {
+            background: #FFF; width: 100%; max-width: 680px; border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2); display: flex; flex-direction: column;
+            max-height: 90vh; transform: translateY(20px); transition: transform 0.2s ease;
+        }
+        .modal-overlay.active .modal-content { transform: translateY(0); }
+        
+        .modal-header {
+            padding: 20px 24px; border-bottom: 1px solid var(--border-color);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .modal-title { font-size: 18px; font-weight: 700; }
+        .btn-close { background: none; border: none; font-size: 24px; color: var(--text-muted); cursor: pointer; line-height: 1; }
+        .btn-close:hover { color: var(--text-main); }
+        
+        .modal-body { padding: 24px; overflow-y: auto; flex: 1; }
+        
+        .modal-footer {
+            padding: 16px 24px; border-top: 1px solid var(--border-color);
+            display: flex; justify-content: flex-end; gap: 12px;
+        }
+        .btn-secondary { padding: 10px 24px; background: #F3F4F6; color: #374151; border: 1px solid #D1D5DB; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; }
+        .btn-secondary:hover { background: #E5E7EB; }
+        .btn-primary { padding: 10px 24px; background: var(--primary); color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; box-shadow: 0 2px 5px rgba(16,185,129,0.3); }
+        .btn-primary:hover { background: var(--primary-hover); }
+
+        /* 弹窗专属输入框美化 */
+        .modal-body input[type="text"], 
+        .modal-body input[type="number"], 
+        .modal-body input[type="datetime-local"], 
+        .modal-body input[type="date"], 
+        .modal-body select {
+            padding: 10px 14px; border: 2px solid #E5E7EB; border-radius: 10px; font-size: 14px; background-color: #F9FAFB;
+        }
+        .modal-body input:focus, .modal-body select:focus {
+            border-color: var(--primary); background-color: #FFF; box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+        }
+        .modal-body .input-group label {
+            font-size: 13px; font-weight: 600; color: #4B5563; margin-bottom: 2px;
+        }
+
+        /* 服药时间多选 */
+        .modal-body .freq-group { display: flex; flex-wrap: nowrap; gap: 10px; margin-top: 8px; }
+        .modal-body .freq-label {
+            flex: 1; text-align: center; padding: 10px 0; background: #F9FAFB; border: 2px solid #E5E7EB; border-radius: 8px;
+            font-size: 14px; font-weight: 500; color: #4B5563; cursor: pointer; transition: 0.2s; position: relative;
+        }
+        .modal-body .freq-label:hover { border-color: #D1D5DB; background: #F3F4F6; }
+        .modal-body .freq-label input { display: none; }
+        .modal-body .freq-label:has(input:checked) {
+            background: #ECFDF5; border-color: var(--primary); color: var(--primary-hover); font-weight: 600; box-shadow: 0 2px 8px rgba(16, 185, 129, 0.15);
+        }
+        .modal-body .freq-label:has(input:checked)::after {
+            content: '✓'; position: absolute; right: 8px; top: 50%; transform: translateY(-50%); font-size: 14px; color: var(--primary);
+        }
+
+        /* 星期几多选 */
+        .modal-body .weekday-group { display: flex; justify-content: space-between; gap: 4px; margin-top: 8px; }
+        .modal-body .weekday-label {
+            width: 38px; height: 38px; border-radius: 50%; background: #F9FAFB; border: 2px solid #E5E7EB;
+            display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; color: #4B5563; cursor: pointer; transition: 0.2s; flex-shrink: 0;
+        }
+        .modal-body .weekday-label:hover { border-color: #D1D5DB; background: #F3F4F6; }
+        .modal-body .weekday-label input { display: none; }
+        .modal-body .weekday-label:has(input:checked) {
+            background: #4F46E5; color: white; border-color: #4F46E5; box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
+        }
+
+        .modal-row-3 { display: grid; grid-template-columns: 2fr 1.5fr 1.5fr; gap: 16px; margin-bottom: 20px;}
+        .modal-row-2 { display: grid; grid-template-columns: 1.5fr 2fr; gap: 16px; margin-bottom: 20px;}
 
         @media (max-width: 900px) {
             body { overflow: auto; height: auto; }
             .dashboard { flex-direction: column; height: auto; padding: 16px; }
-            .left-panel { height: auto; }
-            .left-scroll-area { flex: none; min-height: auto; }
+            .left-panel, .right-panel { max-width: 100%; min-width: 100%; height: auto; }
             .med-list-scroll { overflow: visible; max-height: none; }
-            .right-panel { min-width: 100%; height: auto; }
-            .calendar-container { min-height: 500px; }
+            .right-panel { min-height: 600px; margin-top: 20px;}
+            .modal-content { max-width: 95%; }
+            
+            .modal-body .freq-group { flex-wrap: wrap; }
+            .modal-body .freq-label { flex: 1 1 40%; }
+            .modal-row-3, .modal-row-2 { grid-template-columns: 1fr; gap: 12px;}
         }
     </style>
 </head>
@@ -163,48 +236,36 @@
 
 <div class="dashboard">
     <div class="left-panel">
-        <div class="left-fixed-area">
-            <div class="section-card">
-                <div class="section-title">⚙️ 基础设置</div>
-                <div class="form-grid">
-                    <div class="input-group"><label>导出文件名</label><input type="text" id="outputFilename" value="medication_plan.ics"></div>
-                    <div class="input-group"><label>提前提醒（分钟）</label><input type="number" id="alarmMinutes" value="5" min="0"></div>
-                </div>
-            </div>
-
-            <div class="section-card">
-                <div class="section-title">⏰ 每日服药时间点</div>
-                <div class="form-grid">
-                    <div class="input-group"><label>早饭后</label><input type="time" id="time-morning" value="08:00" onchange="autoRefreshPreview()"></div>
-                    <div class="input-group"><label>午饭后</label><input type="time" id="time-noon" value="12:30" onchange="autoRefreshPreview()"></div>
-                    <div class="input-group"><label>晚饭后</label><input type="time" id="time-evening" value="18:30" onchange="autoRefreshPreview()"></div>
-                    <div class="input-group"><label>晚上/睡前</label><input type="time" id="time-night" value="21:00" onchange="autoRefreshPreview()"></div>
-                </div>
+        <!-- 合并后的紧凑设置区 -->
+        <div class="section-card compact-settings">
+            <div class="form-grid">
+                <div class="input-group"><label>文件名</label><input type="text" id="outputFilename" value="medication_plan.ics"></div>
+                <div class="input-group"><label>提前提醒(分)</label><input type="number" id="alarmMinutes" value="5" min="0"></div>
+                <div class="input-group"><label>早饭后</label><input type="time" id="time-morning" value="08:00" onchange="autoRefreshPreview()"></div>
+                <div class="input-group"><label>午饭后</label><input type="time" id="time-noon" value="12:30" onchange="autoRefreshPreview()"></div>
+                <div class="input-group"><label>晚饭后</label><input type="time" id="time-evening" value="18:30" onchange="autoRefreshPreview()"></div>
+                <div class="input-group"><label>晚上/睡前</label><input type="time" id="time-night" value="21:00" onchange="autoRefreshPreview()"></div>
             </div>
         </div>
 
+        <!-- 药品清单占满剩余高度 -->
         <div class="section-card left-scroll-area">
             <div class="section-title">
                 <span>💊 药品清单</span>
                 <div class="section-title-actions">
-                    <!-- 隐藏的文件输入框 -->
                     <input type="file" id="importFile" accept=".csv" style="display: none;" onchange="handleImport(event)">
                     <button class="btn-import" onclick="document.getElementById('importFile').click()">📤 导入</button>
                     <button class="btn-export" onclick="exportToCSV()">📥 导出</button>
-                    <button class="btn-add" onclick="addMedCard(true)">+ 添加</button>
+                    <button class="btn-clear" onclick="clearAllMeds()">🗑️ 清空</button>
+                    <button class="btn-add" onclick="openModal()">+ 添加</button>
+                    <button class="btn-download-ics" onclick="generateICS()">📅 下载日历</button>
                 </div>
             </div>
-            <div class="med-list-scroll" id="medListScroll">
-                <div id="medContainer"></div>
-            </div>
+            <div class="med-list-scroll" id="medListContainer"></div>
         </div>
     </div>
 
     <div class="right-panel">
-        <div class="action-buttons">
-            <button class="btn-action btn-submit" onclick="generateICS()">📥 生成并下载日历文件</button>
-        </div>
-
         <div class="calendar-container">
             <div class="cal-header">
                 <button class="cal-nav-btn" onclick="changeMonth(-1)">‹</button>
@@ -221,243 +282,292 @@
     </div>
 </div>
 
+<!-- 药品编辑模态框 -->
+<div class="modal-overlay" id="medModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <div class="modal-title" id="modalTitle">添加药品</div>
+            <button class="btn-close" onclick="closeModal()">×</button>
+        </div>
+        <div class="modal-body">
+            
+            <div class="modal-row-3">
+                <div class="input-group">
+                    <label>药品名称</label>
+                    <input type="text" id="modalName" style="font-weight: 600;" placeholder="例如：阿司匹林肠溶片">
+                </div>
+                <div class="input-group">
+                    <label>每次用量</label>
+                    <input type="text" id="modalDose" placeholder="例如：100mg (1片)">
+                </div>
+                <div class="input-group">
+                    <label>开始日期</label>
+                    <input type="datetime-local" id="modalStart" step="60">
+                </div>
+            </div>
+            
+            <div class="input-group" style="margin-bottom: 20px;">
+                <label>服药时间（可多选）</label>
+                <div class="freq-group">
+                    <label class="freq-label"><input type="checkbox" class="m-time" value="早饭后"> 早饭后</label>
+                    <label class="freq-label"><input type="checkbox" class="m-time" value="午饭后"> 午饭后</label>
+                    <label class="freq-label"><input type="checkbox" class="m-time" value="晚饭后"> 晚饭后</label>
+                    <label class="freq-label"><input type="checkbox" class="m-time" value="晚上/睡前"> 晚上/睡前</label>
+                </div>
+            </div>
+
+            <div style="background: #F9FAFB; padding: 16px; border-radius: 12px; border: 1px solid var(--border-color); margin-bottom: 20px;">
+                <div style="display: flex; gap: 16px; margin-bottom: 12px;">
+                    <div class="input-group" style="flex: 1;">
+                        <label>重复频率</label>
+                        <select id="modalFreqType" onchange="updateModalFreqUI()">
+                            <option value="DAILY">按天</option>
+                            <option value="WEEKLY">按周</option>
+                            <option value="MONTHLY">按月</option>
+                        </select>
+                    </div>
+                    <div class="input-group" style="flex: 1;">
+                        <label>重复周期</label>
+                        <div class="input-with-suffix" style="height: 100%;">
+                            每 <input type="number" id="modalInterval" value="1" min="1" style="width: 100%;"> <span class="unit-text" id="modalUnitLabel">天</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="input-group hidden" id="modalWeekGroup">
+                    <label>星期几</label>
+                    <div class="weekday-group">
+                        <label class="weekday-label"><input type="checkbox" class="m-weekday" value="MO"> 一</label>
+                        <label class="weekday-label"><input type="checkbox" class="m-weekday" value="TU"> 二</label>
+                        <label class="weekday-label"><input type="checkbox" class="m-weekday" value="WE"> 三</label>
+                        <label class="weekday-label"><input type="checkbox" class="m-weekday" value="TH"> 四</label>
+                        <label class="weekday-label"><input type="checkbox" class="m-weekday" value="FR"> 五</label>
+                        <label class="weekday-label"><input type="checkbox" class="m-weekday" value="SA"> 六</label>
+                        <label class="weekday-label"><input type="checkbox" class="m-weekday" value="SU"> 日</label>
+                    </div>
+                </div>
+                <div class="input-group hidden" id="modalMonthGroup">
+                    <label>每月几号 (1-31)</label>
+                    <input type="number" id="modalMonthDay" value="1" min="1" max="31" style="width: 120px;">
+                </div>
+            </div>
+
+            <div class="modal-row-2">
+                <div class="input-group">
+                    <label>结束重复</label>
+                    <select id="modalEndType" onchange="updateModalEndUI()">
+                        <option value="NEVER">永不结束</option>
+                        <option value="UNTIL">到指定日期结束</option>
+                        <option value="COUNT">重复指定次数</option>
+                    </select>
+                </div>
+                <div class="input-group hidden" id="modalEndUntilGroup" style="justify-content: flex-end;"><input type="date" id="modalEndDate"></div>
+                <div class="input-group hidden" id="modalEndCountGroup" style="justify-content: flex-end;"><input type="number" id="modalEndCount" value="10" min="1"></div>
+            </div>
+
+            <div class="input-group">
+                <label>医嘱备注</label>
+                <input type="text" id="modalNote" placeholder="如：注意复查血常规、出现肌肉酸痛停药...">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-secondary" onclick="closeModal()">取消</button>
+            <button class="btn-primary" onclick="saveMedication()">保存药品</button>
+        </div>
+    </div>
+</div>
+
 <script>
-    let previewData = [];
+    let medsData = [];
     let dailyTimesConfig = {};
     let currentViewDate = new Date(); 
     let selectedDate = new Date();    
+    let editingIndex = -1; 
 
     window.onload = function() {
-        let today = new Date();
-        let tzoffset = (new Date()).getTimezoneOffset() * 60000;
-        let localISOTime = (new Date(today - tzoffset)).toISOString().slice(0, 16);
-        
-        addMedCard(false, "阿司匹林肠溶片", "100mg (1片)", ["早饭后"], localISOTime, "DAILY", "1", [], "NEVER");
-        addMedCard(false, "氯吡格雷片", "75mg (1粒)", ["早饭后"], localISOTime, "DAILY", "1", [], "COUNT", "13");
-        addMedCard(false, "丁苯酞软胶囊", "0.1g (2粒)", ["早饭后", "午饭后", "晚饭后"], localISOTime, "DAILY", "1", [], "UNTIL", new Date(today.getTime() + 86400000*10).toISOString().split('T')[0]);
-        
-        document.querySelectorAll('.med-card').forEach(card => updateSummary(card));
+        renderMedList();
         autoRefreshPreview();
     };
 
-    function addMedCard(isNew = true, name = "", dose = "", times = [], startStr = "", freqType = "DAILY", interval = "1", weekDays = [], endType = "NEVER", endValue = "") {
-        const container = document.getElementById('medContainer');
-        const card = document.createElement('div');
-        card.className = isNew ? 'med-card' : 'med-card collapsed';
-        
-        let timeCheckboxes = ''; ['早饭后', '午饭后', '晚饭后', '晚上/睡前'].forEach(opt => {
-            const checked = times.includes(opt) ? 'checked' : '';
-            timeCheckboxes += `<label class="freq-label"><input type="checkbox" value="${opt}" ${checked} onchange="autoRefreshPreview()"> ${opt}</label>`;
-        });
-        let weekChecks = ''; ['MO', 'TU', 'WE', 'TH', 'FR', 'SA', 'SU'].forEach((day, index) => {
-            const label = ['一', '二', '三', '四', '五', '六', '日'][index];
-            const checked = weekDays.includes(day) ? 'checked' : '';
-            weekChecks += `<label class="weekday-label"><input type="checkbox" value="${day}" ${checked} onchange="autoRefreshPreview()"> ${label}</label>`;
-        });
-        let dtLocal = startStr ? startStr.replace(" ", "T") : "";
-        
-        card.innerHTML = `
-            <div class="card-header" onclick="toggleCard(this)">
-                <span class="collapse-icon">▼</span>
-                <div class="header-title-group">
-                    <span class="header-name">${name || '新药品'}</span>
-                    <span class="header-dose">${dose}</span>
+    function renderMedList() {
+        const container = document.getElementById('medListContainer');
+        container.innerHTML = '';
+
+        if(medsData.length === 0) {
+            container.innerHTML = '<p style="text-align:center; color:#999; padding: 40px 0;">暂无药品，请点击上方添加</p>';
+            return;
+        }
+
+        medsData.forEach((med, index) => {
+            const timeStr = med.times.length > 0 ? med.times.join('、') : '未选时间';
+            let freqStr = "";
+            if (med.freqType === 'DAILY') freqStr = med.interval === 1 ? '每天' : `每 ${med.interval} 天`;
+            else if (med.freqType === 'WEEKLY') {
+                const dayMap = { 'MO':'一', 'TU':'二', 'WE':'三', 'TH':'四', 'FR':'五', 'SA':'六', 'SU':'日' };
+                const dayStr = med.weekDays.map(d => dayMap[d]).join('');
+                freqStr = (med.interval === 1 ? '每周' : `每 ${med.interval} 周`) + ` (周${dayStr})`;
+            }
+            else if (med.freqType === 'MONTHLY') freqStr = (med.interval === 1 ? '每月' : `每 ${med.interval} 月`) + ` ${med.monthDay}号`;
+
+            let endStr = med.endType === 'NEVER' ? '长期' : med.endType === 'UNTIL' ? `至${med.endDateStr}` : `共${med.endCount}次`;
+            const summaryText = `${timeStr} | ${freqStr} | ${endStr}`;
+
+            const item = document.createElement('div');
+            item.className = 'med-item';
+            item.onclick = () => openModal(index);
+            item.innerHTML = `
+                <div class="med-item-info">
+                    <div class="med-item-title">
+                        <span class="med-item-name">${med.name}</span>
+                        <span class="med-item-dose">${med.dose}</span>
+                    </div>
+                    <div class="med-item-summary" title="${summaryText}">${summaryText}</div>
                 </div>
-                <div class="header-summary"></div>
-                <button class="btn-del" onclick="event.stopPropagation(); this.closest('.med-card').remove(); autoRefreshPreview();">✕</button>
-            </div>
+                <button class="btn-del-item" onclick="event.stopPropagation(); deleteMedication(${index})">✕</button>
+            `;
+            container.appendChild(item);
+        });
+    }
+
+    function clearAllMeds() {
+        if(medsData.length === 0) return;
+        if(confirm("⚠️ 确定要清空所有药品数据吗？此操作不可恢复。")) {
+            medsData = [];
+            renderMedList();
+            autoRefreshPreview();
+        }
+    }
+
+    function openModal(index = -1) {
+        editingIndex = index;
+        const modal = document.getElementById('medModal');
+        
+        document.getElementById('modalName').value = '';
+        document.getElementById('modalDose').value = '';
+        document.querySelectorAll('.m-time').forEach(el => el.checked = false);
+        document.getElementById('modalStart').value = new Date((new Date()).getTime() - (new Date()).getTimezoneOffset()*60000).toISOString().slice(0, 16);
+        document.getElementById('modalFreqType').value = 'DAILY';
+        document.getElementById('modalInterval').value = '1';
+        document.querySelectorAll('.m-weekday').forEach(el => el.checked = false);
+        document.getElementById('modalMonthDay').value = '1';
+        document.getElementById('modalEndType').value = 'NEVER';
+        document.getElementById('modalEndDate').value = '';
+        document.getElementById('modalEndCount').value = '10';
+        document.getElementById('modalNote').value = '';
+        
+        updateModalFreqUI();
+        updateModalEndUI();
+
+        if (index >= 0) {
+            document.getElementById('modalTitle').textContent = '编辑药品';
+            const med = medsData[index];
+            document.getElementById('modalName').value = med.name;
+            document.getElementById('modalDose').value = med.dose;
+            document.querySelectorAll('.m-time').forEach(el => el.checked = med.times.includes(el.value));
+            document.getElementById('modalStart').value = med.startLocal;
+            document.getElementById('modalFreqType').value = med.freqType;
+            document.getElementById('modalInterval').value = med.interval;
+            document.querySelectorAll('.m-weekday').forEach(el => el.checked = med.weekDays.includes(el.value));
+            document.getElementById('modalMonthDay').value = med.monthDay;
+            document.getElementById('modalEndType').value = med.endType;
+            document.getElementById('modalEndDate').value = med.endDateStr;
+            document.getElementById('modalEndCount').value = med.endCount;
+            document.getElementById('modalNote').value = med.note;
             
-            <div class="card-body">
-                <div class="form-grid" style="margin-bottom: 12px;">
-                    <div class="input-group" style="flex: 2;"><label>药品名称</label><input type="text" class="m-name" value="${name}" style="font-weight: 600;" onchange="updateHeaderText(this)"></div>
-                    <div class="input-group" style="flex: 1;"><label>每次用量</label><input type="text" class="m-dose" value="${dose}" onchange="updateHeaderText(this)"></div>
-                </div>
-                <div class="input-group" style="margin-bottom: 12px;"><label>服药时间（可多选）</label><div class="freq-group">${timeCheckboxes}</div></div>
-                <div class="form-grid" style="background: #F9FAFB; padding: 12px; border-radius: 8px; border: 1px solid #eee; margin-bottom: 12px;">
-                    <div class="input-group"><label>开始日期</label><input type="datetime-local" class="m-start" value="${dtLocal}" step="60" onchange="autoRefreshPreview()"></div>
-                    <div class="input-group"><label>重复频率</label>
-                        <select class="m-freq-type" onchange="updateFreqUI(this)">
-                            <option value="DAILY" ${freqType === 'DAILY' ? 'selected' : ''}>按天</option>
-                            <option value="WEEKLY" ${freqType === 'WEEKLY' ? 'selected' : ''}>按周</option>
-                            <option value="MONTHLY" ${freqType === 'MONTHLY' ? 'selected' : ''}>按月</option>
-                        </select>
-                    </div>
-                    <div class="input-group"><label>重复周期</label><div class="input-with-suffix">每 <input type="number" class="m-interval" value="${interval}" min="1" style="width: 60px;" onchange="autoRefreshPreview()"> <span class="unit-text unit-label">${freqType === 'DAILY' ? '天' : freqType === 'WEEKLY' ? '周' : '月'}</span></div></div>
-                    <div class="input-group freq-weekly ${freqType === 'WEEKLY' ? '' : 'hidden'}" style="grid-column: 1 / -1;"><label>星期几</label><div class="weekday-group">${weekChecks}</div></div>
-                    <div class="input-group freq-monthly ${freqType === 'MONTHLY' ? '' : 'hidden'}" style="grid-column: 1 / -1;"><label>每月几号(1-31)</label><input type="number" class="m-monthday" value="1" min="1" max="31" onchange="autoRefreshPreview()"></div>
-                </div>
-                <div class="form-grid">
-                    <div class="input-group"><label>结束重复</label>
-                        <select class="m-end-type" onchange="toggleEndUI(this)">
-                            <option value="NEVER" ${endType === 'NEVER' ? 'selected' : ''}>永不结束</option>
-                            <option value="UNTIL" ${endType === 'UNTIL' ? 'selected' : ''}>到指定时间</option>
-                            <option value="COUNT" ${endType === 'COUNT' ? 'selected' : ''}>指定次数</option>
-                        </select>
-                    </div>
-                    <div class="input-group end-until hidden" style="justify-content: flex-end;"><input type="date" class="m-end-date" value="${endType === 'UNTIL' ? endValue : ''}" onchange="autoRefreshPreview()"></div>
-                    <div class="input-group end-count hidden" style="justify-content: flex-end;"><input type="number" class="m-end-count" value="${endType === 'COUNT' && endValue ? endValue : '10'}" min="1" onchange="autoRefreshPreview()"></div>
-                </div>
-            </div>
-        `;
-        container.appendChild(card);
-        
-        if(endType === 'UNTIL') card.querySelector('.m-end-type').dispatchEvent(new Event('change'));
-        if(endType === 'COUNT') card.querySelector('.m-end-type').dispatchEvent(new Event('change'));
-        
-        if(isNew) {
-            const scrollWrap = document.getElementById('medListScroll');
-            setTimeout(() => { scrollWrap.scrollTop = scrollWrap.scrollHeight; }, 50);
+            updateModalFreqUI();
+            updateModalEndUI();
+        } else {
+            document.getElementById('modalTitle').textContent = '添加药品';
         }
+
+        modal.classList.add('active');
     }
 
-    function toggleCard(headerElem) {
-        const card = headerElem.closest('.med-card');
-        card.classList.toggle('collapsed');
-        if (card.classList.contains('collapsed')) {
-            updateSummary(card);
-        }
+    function closeModal() {
+        document.getElementById('medModal').classList.remove('active');
     }
 
-    function updateSummary(card) {
-        const name = card.querySelector('.m-name').value || '新药品';
-        const dose = card.querySelector('.m-dose').value || '';
-        card.querySelector('.header-name').textContent = name;
-        card.querySelector('.header-dose').textContent = dose;
-
-        const times = Array.from(card.querySelectorAll('.freq-group input[type="checkbox"]:checked')).map(c => c.value);
-        const timeStr = times.length > 0 ? times.join('、') : '未选时间';
-
-        const freqType = card.querySelector('.m-freq-type').value;
-        const interval = parseInt(card.querySelector('.m-interval').value) || 1;
-        let freqStr = "";
-        
-        if (freqType === 'DAILY') {
-            freqStr = interval === 1 ? '每天' : `每 ${interval} 天`;
-        } else if (freqType === 'WEEKLY') {
-            const days = Array.from(card.querySelectorAll('.weekday-group input:checked')).map(c => c.value);
-            const dayMap = { 'MO':'一', 'TU':'二', 'WE':'三', 'TH':'四', 'FR':'五', 'SA':'六', 'SU':'日' };
-            const dayStr = days.length > 0 ? days.map(d => dayMap[d]).join('') : '未选';
-            freqStr = (interval === 1 ? '每周' : `每 ${interval} 周`) + ` (周${dayStr})`;
-        } else if (freqType === 'MONTHLY') {
-            const mDay = card.querySelector('.m-monthday').value;
-            freqStr = (interval === 1 ? '每月' : `每 ${interval} 月`) + ` ${mDay}号`;
-        }
-
-        const endType = card.querySelector('.m-end-type').value;
-        let endStr = "";
-        if (endType === 'NEVER') {
-            endStr = '长期';
-        } else if (endType === 'UNTIL') {
-            const endDate = card.querySelector('.m-end-date').value;
-            endStr = endDate ? `至${endDate}` : '未设日期';
-        } else if (endType === 'COUNT') {
-            const count = card.querySelector('.m-end-count').value;
-            endStr = `共${count}次`;
-        }
-
-        const summaryText = `${timeStr} | ${freqStr} | ${endStr}`;
-        card.querySelector('.header-summary').textContent = summaryText;
-        card.querySelector('.header-summary').title = summaryText; 
+    function updateModalFreqUI() {
+        const val = document.getElementById('modalFreqType').value;
+        document.getElementById('modalUnitLabel').textContent = val === 'DAILY' ? '天' : val === 'WEEKLY' ? '周' : '月';
+        document.getElementById('modalWeekGroup').classList.toggle('hidden', val !== 'WEEKLY');
+        document.getElementById('modalMonthGroup').classList.toggle('hidden', val !== 'MONTHLY');
     }
 
-    function updateHeaderText(inputElem) {
-        const card = inputElem.closest('.med-card');
-        card.querySelector('.header-name').textContent = card.querySelector('.m-name').value || '新药品';
-        card.querySelector('.header-dose').textContent = card.querySelector('.m-dose').value || '';
+    function updateModalEndUI() {
+        const val = document.getElementById('modalEndType').value;
+        document.getElementById('modalEndUntilGroup').classList.toggle('hidden', val !== 'UNTIL');
+        document.getElementById('modalEndCountGroup').classList.toggle('hidden', val !== 'COUNT');
+    }
+
+    function saveMedication() {
+        const name = document.getElementById('modalName').value.trim();
+        if (!name) { alert("请输入药品名称！"); return; }
+
+        const times = Array.from(document.querySelectorAll('.m-time:checked')).map(el => el.value);
+        if (times.length === 0) { alert("请至少选择一个服药时间！"); return; }
+
+        const med = {
+            name: name,
+            dose: document.getElementById('modalDose').value.trim() || '按医嘱',
+            times: times,
+            startLocal: document.getElementById('modalStart').value || new Date().toISOString().slice(0,16),
+            freqType: document.getElementById('modalFreqType').value,
+            interval: parseInt(document.getElementById('modalInterval').value) || 1,
+            weekDays: Array.from(document.querySelectorAll('.m-weekday:checked')).map(el => el.value),
+            monthDay: parseInt(document.getElementById('modalMonthDay').value) || 1,
+            endType: document.getElementById('modalEndType').value,
+            endDateStr: document.getElementById('modalEndDate').value,
+            endCount: parseInt(document.getElementById('modalEndCount').value) || 10,
+            note: document.getElementById('modalNote').value.trim()
+        };
+
+        if (editingIndex >= 0) {
+            medsData[editingIndex] = med;
+        } else {
+            medsData.push(med);
+        }
+
+        closeModal();
+        renderMedList();
         autoRefreshPreview();
     }
 
-    function updateFreqUI(selectElem) {
-        const card = selectElem.closest('.med-card');
-        const val = selectElem.value;
-        card.querySelector('.unit-label').textContent = val === 'DAILY' ? '天' : val === 'WEEKLY' ? '周' : '月';
-        card.querySelector('.freq-weekly').classList.toggle('hidden', val !== 'WEEKLY');
-        card.querySelector('.freq-monthly').classList.toggle('hidden', val !== 'MONTHLY');
-        autoRefreshPreview();
-    }
-
-    function toggleEndUI(selectElem) {
-        const card = selectElem.closest('.med-card');
-        const val = selectElem.value;
-        card.querySelector('.end-until').classList.toggle('hidden', val !== 'UNTIL');
-        card.querySelector('.end-count').classList.toggle('hidden', val !== 'COUNT');
-        autoRefreshPreview();
-    }
-
-    function formatDateToUTC(date) {
-        return date.getUTCFullYear() + ('0' + (date.getUTCMonth() + 1)).slice(-2) + ('0' + date.getUTCDate()).slice(-2) + 'T' + ('0' + date.getUTCHours()).slice(-2) + ('0' + date.getUTCMinutes()).slice(-2) + ('0' + date.getUTCSeconds()).slice(-2) + 'Z';
+    function deleteMedication(index) {
+        if(confirm(`确认删除 "${medsData[index].name}" 吗？`)) {
+            medsData.splice(index, 1);
+            renderMedList();
+            autoRefreshPreview();
+        }
     }
 
     function extractData() {
         dailyTimesConfig = {
-            "早饭后": document.getElementById('time-morning').value,
-            "午饭后": document.getElementById('time-noon').value,
-            "晚饭后": document.getElementById('time-evening').value,
-            "晚上/睡前": document.getElementById('time-night').value
+            "早饭后": document.getElementById('time-morning').value || "08:00",
+            "午饭后": document.getElementById('time-noon').value || "12:30",
+            "晚饭后": document.getElementById('time-evening').value || "18:30",
+            "晚上/睡前": document.getElementById('time-night').value || "21:00"
         };
-        const cards = document.querySelectorAll('.med-card');
-        const medsData = [];
-        for (let card of cards) {
-            const name = card.querySelector('.m-name').value.trim();
-            if (!name) continue; 
-            const med = {
-                name: name,
-                dose: card.querySelector('.m-dose').value.trim() || "按医嘱",
-                startLocal: card.querySelector('.m-start').value,
-                freqType: card.querySelector('.m-freq-type').value,
-                interval: parseInt(card.querySelector('.m-interval').value) || 1,
-                times: Array.from(card.querySelectorAll('.freq-group input[type="checkbox"]:checked')).map(c => c.value),
-                endType: card.querySelector('.m-end-type').value,
-                weekDays: Array.from(card.querySelectorAll('.weekday-group input:checked')).map(c => c.value),
-                monthDay: parseInt(card.querySelector('.m-monthday').value),
-                endDateStr: card.querySelector('.m-end-date').value,
-                endCount: parseInt(card.querySelector('.m-end-count').value)
-            };
-            if(med.times.length === 0) continue;
-            medsData.push(med);
-        }
         return medsData;
     }
 
-    // ================= CSV 导出与导入 =================
-    
-    // 导出为 CSV
     function exportToCSV() {
-        const data = extractData();
-        if(data.length === 0) { alert("没有可导出的药品数据！"); return; }
+        if(medsData.length === 0) { alert("没有可导出的药品数据！"); return; }
 
-        // 精简设计的表头，方便 excel 编辑后重新导入
-        let csvContent = "\uFEFF药品名称,每次用量,服药时间,重复频率,重复周期,星期几,每月几号,结束类型,结束日期,结束次数,开始时间\n";
+        let csvContent = "\uFEFF药品名称,每次用量,服药时间,重复频率,重复周期,星期几,每月几号,结束类型,结束日期,结束次数,开始时间,医嘱备注\n";
 
-        data.forEach(med => {
-            // 处理服药时间
+        medsData.forEach(med => {
             const timeLabelStr = med.times.join('、');
-            
-            // 处理重复频率
             let freqTypeStr = med.freqType === 'DAILY' ? '按天' : med.freqType === 'WEEKLY' ? '按周' : '按月';
-            
-            // 处理星期几
             const dayMap = { 'MO':'周一', 'TU':'周二', 'WE':'周三', 'TH':'周四', 'FR':'周五', 'SA':'周六', 'SU':'周日' };
             const weekStr = med.weekDays.map(d => dayMap[d]).join('、');
-
-            // 处理结束类型
             let endTypeStr = med.endType === 'NEVER' ? '永不结束' : med.endType === 'UNTIL' ? '指定日期' : '指定次数';
-            
-            // 开始时间转换为标准格式 YYYY-MM-DD HH:mm
             let startStr = med.startLocal ? med.startLocal.replace('T', ' ') : '';
 
             const row = [
-                `"${med.name}"`,
-                `"${med.dose}"`,
-                `"${timeLabelStr}"`,
-                `"${freqTypeStr}"`,
-                med.interval, // 纯数字
-                `"${weekStr}"`,
-                med.monthDay || '', // 纯数字
-                `"${endTypeStr}"`,
-                `"${med.endDateStr || ''}"`,
-                med.endCount || '', // 纯数字
-                `"${startStr}"`
+                `"${med.name}"`, `"${med.dose}"`, `"${timeLabelStr}"`, `"${freqTypeStr}"`,
+                med.interval, `"${weekStr}"`, med.monthDay || '', `"${endTypeStr}"`,
+                `"${med.endDateStr || ''}"`, med.endCount || '', `"${startStr}"`, `"${med.note}"`
             ].join(",");
             
             csvContent += row + "\n";
@@ -472,7 +582,6 @@
         document.body.removeChild(link);
     }
 
-    // 处理文件导入
     function handleImport(event) {
         const file = event.target.files[0];
         if (!file) return;
@@ -482,18 +591,13 @@
             const text = e.target.result;
             const rows = parseCSV(text);
             
-            if (rows.length < 2) {
-                alert("表格内容为空或格式错误！");
-                return;
-            }
+            if (rows.length < 2) { alert("表格内容为空或格式错误！"); return; }
 
-            // 清空当前列表
-            document.getElementById('medContainer').innerHTML = '';
+            const newMeds = [];
 
-            // 跳过表头（第0行），从第1行开始遍历
             for (let i = 1; i < rows.length; i++) {
                 const row = rows[i];
-                if (row.length < 11 || !row[0].trim()) continue; // 跳过空行或列数不足的行
+                if (row.length < 11 || !row[0].trim()) continue; 
 
                 const name = row[0].trim();
                 const dose = row[1].trim();
@@ -505,19 +609,23 @@
                 const endTypeStr = row[7].trim();
                 const endDate = row[8].trim();
                 const endCount = parseInt(row[9]) || 10;
-                const startTime = row[10].trim();
+                let startTime = row[10].trim();
+                const note = row[11] ? row[11].trim() : '';
 
-                // 数据转换
-                // 1. 时间
+                if (startTime.includes('/')) {
+                    const d = new Date(startTime);
+                    if(!isNaN(d.getTime())) {
+                        const tzoffset = (new Date()).getTimezoneOffset() * 60000;
+                        startTime = (new Date(d - tzoffset)).toISOString().slice(0, 16).replace('T', ' ');
+                    }
+                }
+
                 const timesList = timesStr ? timesStr.split(/[、,，]/) : [];
-                // 2. 频率
                 let freqType = "DAILY";
                 if (freqStr.includes("周")) freqType = "WEEKLY";
                 if (freqStr.includes("月")) freqType = "MONTHLY";
-                // 3. 星期几
                 const weekMap = { '周一':'MO', '周二':'TU', '周三':'WE', '周四':'TH', '周五':'FR', '周六':'SA', '周日':'SU' };
                 const weekDaysList = weekStr ? weekStr.split(/[、,，]/).map(s => weekMap[s.trim()]).filter(Boolean) : [];
-                // 4. 结束类型
                 let endType = "NEVER";
                 if (endTypeStr.includes("日期")) endType = "UNTIL";
                 if (endTypeStr.includes("次数")) endType = "COUNT";
@@ -526,77 +634,53 @@
                 if (endType === 'UNTIL') endValue = endDate;
                 if (endType === 'COUNT') endValue = endCount;
 
-                // 生成卡片
-                addMedCard(false, name, dose, timesList, startTime.replace(' ', 'T'), freqType, interval, weekDaysList, endType, endValue);
+                newMeds.push({
+                    name, dose, times: timesList, 
+                    startLocal: startTime.replace(' ', 'T') || new Date().toISOString().slice(0,16),
+                    freqType, interval, weekDays: weekDaysList, monthDay,
+                    endType, endDateStr: endValue, endCount: endValue, note
+                });
             }
 
-            // 刷新摘要和日历
-            document.querySelectorAll('.med-card').forEach(card => updateSummary(card));
+            medsData = newMeds;
+            renderMedList();
             autoRefreshPreview();
             
-            // 清空 input 允许重复上传同名文件
             event.target.value = '';
             alert("表格导入成功！");
         };
         reader.readAsText(file, 'UTF-8');
     }
 
-    // 简易 CSV 解析器（支持双引号包裹）
     function parseCSV(text) {
-        let result = [];
-        let row = [];
-        let current = '';
-        let inQuotes = false;
-        
+        let result = []; let row = []; let current = ''; let inQuotes = false;
         for (let i = 0; i < text.length; i++) {
-            const char = text[i];
-            const nextChar = text[i + 1];
-            
+            const char = text[i]; const nextChar = text[i + 1];
             if (inQuotes) {
-                if (char === '"' && nextChar === '"') {
-                    current += '"';
-                    i++;
-                } else if (char === '"') {
-                    inQuotes = false;
-                } else {
-                    current += char;
-                }
+                if (char === '"' && nextChar === '"') { current += '"'; i++; }
+                else if (char === '"') { inQuotes = false; }
+                else { current += char; }
             } else {
-                if (char === '"') {
-                    inQuotes = true;
-                } else if (char === ',') {
-                    row.push(current);
-                    current = '';
-                } else if (char === '\n' || char === '\r') {
-                    if (current !== '' || row.length > 0) {
-                        row.push(current);
-                        result.push(row);
-                        row = [];
-                        current = '';
-                    }
-                    // 处理 \r\n
+                if (char === '"') { inQuotes = true; }
+                else if (char === ',') { row.push(current); current = ''; }
+                else if (char === '\n' || char === '\r') {
+                    if (current !== '' || row.length > 0) { row.push(current); result.push(row); row = []; current = ''; }
                     if (char === '\r' && nextChar === '\n') i++;
-                } else {
-                    current += char;
-                }
+                } else { current += char; }
             }
         }
-        if (current !== '' || row.length > 0) {
-            row.push(current);
-            result.push(row);
-        }
+        if (current !== '' || row.length > 0) { row.push(current); result.push(row); }
         return result;
     }
 
-    // ================= 日历逻辑 =================
-
     function getEventsForDate(targetDate) {
         let events = [];
-        previewData.forEach(med => {
+        medsData.forEach(med => {
             const startBase = new Date(med.startLocal);
-            let isMatch = false;
+            const safeStartBase = isNaN(startBase.getTime()) ? new Date() : startBase;
             
-            const diffTime = targetDate.getTime() - new Date(startBase.getFullYear(), startBase.getMonth(), startBase.getDate()).getTime();
+            let isMatch = false;
+            const diffTime = targetDate.getTime() - new Date(safeStartBase.getFullYear(), safeStartBase.getMonth(), safeStartBase.getDate()).getTime();
             const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
             if (diffDays >= 0) {
@@ -608,10 +692,10 @@
                     if(med.weekDays.includes(currentWeekDay) && weeksPassed % med.interval === 0) isMatch = true;
                 } else if (med.freqType === 'MONTHLY') {
                     if (targetDate.getDate() === med.monthDay) {
-                        const monthsPassed = (targetDate.getFullYear() - startBase.getFullYear()) * 12 + (targetDate.getMonth() - startBase.getMonth());
+                        const monthsPassed = (targetDate.getFullYear() - safeStartBase.getFullYear()) * 12 + (targetDate.getMonth() - safeStartBase.getMonth());
                         if(monthsPassed >= 0 && monthsPassed % med.interval === 0) isMatch = true;
                     } else if (med.monthDay > 28 && targetDate.getDate() === new Date(targetDate.getFullYear(), targetDate.getMonth() + 1, 0).getDate()) {
-                        const monthsPassed = (targetDate.getFullYear() - startBase.getFullYear()) * 12 + (targetDate.getMonth() - startBase.getMonth());
+                        const monthsPassed = (targetDate.getFullYear() - safeStartBase.getFullYear()) * 12 + (targetDate.getMonth() - safeStartBase.getMonth());
                         if(monthsPassed >= 0 && monthsPassed % med.interval === 0) isMatch = true;
                     }
                 }
@@ -619,7 +703,7 @@
 
             if (isMatch && med.endType === 'UNTIL' && med.endDateStr) {
                 const endD = new Date(med.endDateStr + "T23:59:59");
-                if (targetDate > endD) isMatch = false;
+                if (!isNaN(endD.getTime()) && targetDate > endD) isMatch = false;
             }
 
             if (isMatch) {
@@ -630,11 +714,12 @@
                         let dtStart = new Date(targetDate);
                         dtStart.setHours(h, m, 0, 0);
                         
-                        if(dtStart >= startBase) {
+                        if(dtStart >= safeStartBase) {
                             events.push({
                                 time: timeStr,
                                 title: `💊 ${med.name}`,
                                 dose: med.dose,
+                                note: med.note,
                                 timeLabel: timeLabel,
                                 sortVal: h * 60 + m
                             });
@@ -647,14 +732,7 @@
     }
 
     function autoRefreshPreview() {
-        previewData = extractData();
-        document.querySelectorAll('.med-card').forEach(card => updateSummary(card));
-
-        if(previewData.length === 0) {
-            document.getElementById('monthGridDays').innerHTML = '';
-            document.getElementById('dayDetailList').innerHTML = '<p style="text-align:center;color:#999;padding:20px;">请添加药品后查看日历</p>';
-            return;
-        }
+        extractData(); 
         renderMonthCalendar();
     }
 
@@ -697,10 +775,7 @@
             }
             dotsHtml += '</div>';
 
-            cell.innerHTML = `
-                <div class="day-num">${i}</div>
-                ${events.length > 0 ? dotsHtml : ''}
-            `;
+            cell.innerHTML = `<div class="day-num">${i}</div>${events.length > 0 ? dotsHtml : ''}`;
 
             cell.onclick = () => {
                 selectedDate = cellDate;
@@ -717,25 +792,26 @@
     function renderDayDetail() {
         const listContainer = document.getElementById('dayDetailList');
         const events = getEventsForDate(selectedDate);
-        
         const dateStr = `${selectedDate.getMonth()+1}月${selectedDate.getDate()}日`;
         
         if (events.length === 0) {
             listContainer.innerHTML = `
                 <div class="detail-title">📅 ${dateStr} 的服药安排</div>
-                <p style="color: var(--text-muted); font-size: 13px; text-align: center; padding: 10px 0;">无服药安排</p>
+                <p style="color: var(--text-muted); font-size: 13px; text-align: center; padding: 20px 0;">无服药安排</p>
             `;
             return;
         }
 
         let listHtml = `<div class="detail-title">📅 ${dateStr} 的服药安排</div>`;
         events.forEach(ev => {
+            const noteHtml = ev.note ? `<div class="item-note">📌 ${ev.note}</div>` : '';
             listHtml += `
                 <div class="list-item">
                     <div class="item-time">${ev.time}</div>
                     <div class="item-info">
                         <div class="item-name">${ev.title}</div>
                         <div class="item-desc">用量：${ev.dose} | 时间：${ev.timeLabel}</div>
+                        ${noteHtml}
                     </div>
                 </div>
             `;
@@ -744,15 +820,17 @@
     }
 
     function generateICS() {
+        extractData(); 
+
         const outputFilename = document.getElementById('outputFilename').value || 'medication_plan.ics';
         const alarmMinutes = parseInt(document.getElementById('alarmMinutes').value) || 5;
-        const data = extractData();
 
-        if(data.length === 0) { alert("请先添加有效的药品配置！"); return; }
+        if(medsData.length === 0) { alert("请先添加有效的药品配置！"); return; }
 
         let icsContent = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Medication Web Generator//CN", "CALSCALE:GREGORIAN", "METHOD:PUBLISH"];
+        let eventCount = 0;
 
-        data.forEach((med) => {
+        medsData.forEach((med) => {
             let rruleExtra = "";
             if (med.freqType === 'WEEKLY') rruleExtra = `;BYDAY=${med.weekDays.join(',')}`;
             if (med.freqType === 'MONTHLY') rruleExtra = `;BYMONTHDAY=${med.monthDay}`;
@@ -760,7 +838,7 @@
             let rruleEnd = "";
             if (med.endType === 'UNTIL' && med.endDateStr) {
                 let endDate = new Date(med.endDateStr + "T23:59:59");
-                rruleEnd = `;UNTIL=${formatDateToUTC(endDate)}`;
+                if(!isNaN(endDate.getTime())) rruleEnd = `;UNTIL=${formatDateToUTC(endDate)}`;
             } else if (med.endType === 'COUNT') {
                 rruleEnd = `;COUNT=${med.endCount}`;
             }
@@ -772,13 +850,19 @@
                 if(!timeStr) return;
 
                 const [hour, minute] = timeStr.split(':').map(Number);
-                let dtStart = new Date(med.startLocal);
+                let baseStartStr = med.startLocal || new Date().toISOString().slice(0,16);
+                let dtStart = new Date(baseStartStr);
+                
+                if(isNaN(dtStart.getTime())) dtStart = new Date();
+
                 dtStart.setHours(hour, minute, 0, 0);
                 let dtEnd = new Date(dtStart.getTime() + 5 * 60000); 
 
                 const uid = Math.random().toString(36).substring(2) + "@medschedule";
                 const freqLabel = med.freqType === 'DAILY' ? '天' : med.freqType === 'WEEKLY' ? '周' : '月';
-                const description = `每次用量：${med.dose}\\n服药时间：${timeLabel}\\n服药周期：每 ${med.interval} ${freqLabel}`;
+                
+                let description = `每次用量：${med.dose}\\n服药时间：${timeLabel}\\n服药周期：每 ${med.interval} ${freqLabel}`;
+                if (med.note) description += `\\n医嘱备注：${med.note}`;
 
                 icsContent.push(
                     "BEGIN:VEVENT",
@@ -796,8 +880,14 @@
                     "END:VALARM",
                     "END:VEVENT"
                 );
+                eventCount++;
             });
         });
+
+        if(eventCount === 0) {
+            alert("生成的日历中没有任何事件！请检查药品是否选择了服药时间。");
+            return;
+        }
 
         icsContent.push("END:VCALENDAR");
         const blob = new Blob([icsContent.join('\r\n')], { type: 'text/calendar;charset=utf-8' });
@@ -807,6 +897,11 @@
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+        alert(`✅ 成功生成日历文件，共包含 ${eventCount} 个事件。`);
+    }
+
+    function formatDateToUTC(date) {
+        return date.getUTCFullYear() + ('0' + (date.getUTCMonth() + 1)).slice(-2) + ('0' + date.getUTCDate()).slice(-2) + 'T' + ('0' + date.getUTCHours()).slice(-2) + ('0' + date.getUTCMinutes()).slice(-2) + ('0' + date.getUTCSeconds()).slice(-2) + 'Z';
     }
 </script>
 </body>
