@@ -55,7 +55,7 @@
         
         input[type="text"], input[type="number"], input[type="datetime-local"], input[type="time"], input[type="date"], select {
             padding: 8px 10px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 13px; font-family: inherit; background-color: #FAFAFA; transition: 0.2s;
-            width: 100%; /* 确保填满且不超框 */
+            width: 100%;
         }
         input:focus, select:focus { outline: none; border-color: var(--primary); background-color: #FFF; box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1); }
 
@@ -122,13 +122,12 @@
         .item-desc { font-size: 12px; color: var(--text-muted); }
         .item-note { font-size: 12px; color: #B45309; background: #FEF3C7; padding: 2px 6px; border-radius: 4px; margin-top: 4px; display: inline-block; word-break: break-all;}
 
-        /* 模态框 (Modal) 样式 */
         .modal-overlay {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(2px);
             display: flex; justify-content: center; align-items: center; z-index: 1000;
             opacity: 0; transition: opacity 0.2s ease; pointer-events: none;
-            padding: 16px; /* 防止在小屏上贴边 */
+            padding: 16px;
         }
         .modal-overlay.active { opacity: 1; pointer-events: auto; }
         
@@ -136,7 +135,7 @@
             background: #FFF; width: 100%; max-width: 680px; border-radius: 16px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.2); display: flex; flex-direction: column;
             max-height: 90vh; transform: translateY(20px); transition: transform 0.2s ease;
-            overflow: hidden; /* 绝对防止内部元素撑破外框 */
+            overflow: hidden;
         }
         .modal-overlay.active .modal-content { transform: translateY(0); }
         
@@ -159,29 +158,15 @@
         .btn-primary { padding: 10px 24px; background: var(--primary); color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; box-shadow: 0 2px 5px rgba(16,185,129,0.3); white-space: nowrap;}
         .btn-primary:hover { background: var(--primary-hover); }
 
-        /* 弹窗专属输入框美化 */
-        .modal-body input[type="text"], 
-        .modal-body input[type="number"], 
-        .modal-body input[type="datetime-local"], 
-        .modal-body input[type="date"], 
-        .modal-body select {
-            padding: 10px 14px; border: 2px solid #E5E7EB; border-radius: 10px; font-size: 14px; background-color: #F9FAFB;
-            width: 100%; min-width: 0; /* 关键：防止原生的datetime-local撑破网格 */
+        .modal-body input[type="text"], .modal-body input[type="number"], .modal-body input[type="datetime-local"], .modal-body input[type="date"], .modal-body select {
+            padding: 10px 14px; border: 2px solid #E5E7EB; border-radius: 10px; font-size: 14px; background-color: #F9FAFB; width: 100%; min-width: 0;
         }
         .modal-body input:focus, .modal-body select:focus {
             border-color: var(--primary); background-color: #FFF; box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
         }
-        .modal-body .input-group label {
-            font-size: 13px; font-weight: 600; color: #4B5563; margin-bottom: 2px;
-        }
+        .modal-body .input-group label { font-size: 13px; font-weight: 600; color: #4B5563; margin-bottom: 2px; }
 
-        /* 服药时间多选：采用 grid 保证绝不溢出 */
-        .modal-body .freq-group { 
-            display: grid; 
-            grid-template-columns: repeat(4, 1fr); 
-            gap: 10px; 
-            margin-top: 8px; 
-        }
+        .modal-body .freq-group { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 8px; }
         .modal-body .freq-label {
             text-align: center; padding: 10px 0; background: #F9FAFB; border: 2px solid #E5E7EB; border-radius: 8px;
             font-size: 13px; font-weight: 500; color: #4B5563; cursor: pointer; transition: 0.2s; position: relative;
@@ -196,7 +181,6 @@
             content: '✓'; position: absolute; right: 6px; top: 50%; transform: translateY(-50%); font-size: 14px; color: var(--primary);
         }
 
-        /* 星期几多选：自适应均分，防溢出 */
         .modal-body .weekday-group { display: flex; justify-content: space-between; gap: 4px; margin-top: 8px; }
         .modal-body .weekday-label {
             width: 38px; height: 38px; border-radius: 50%; background: #F9FAFB; border: 2px solid #E5E7EB;
@@ -208,11 +192,9 @@
             background: #4F46E5; color: white; border-color: #4F46E5; box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
         }
 
-        /* 网格子项允许收缩 */
         .modal-row-3 { display: grid; grid-template-columns: 2fr 1.5fr 1.5fr; gap: 16px; margin-bottom: 20px;}
         .modal-row-2 { display: grid; grid-template-columns: 1.5fr 2fr; gap: 16px; margin-bottom: 20px;}
 
-        /* 响应式 */
         @media (max-width: 900px) {
             body { overflow: auto; height: auto; }
             .dashboard { flex-direction: column; height: auto; padding: 16px; }
@@ -380,7 +362,6 @@
         autoRefreshPreview();
     };
 
-    // 强制解析日期字符串（支持 2023-11-05 08:00 或 2023/11/5 08:00）
     function parseLocalDate(str) {
         if(!str) return null;
         str = String(str).trim().replace('T', ' ').replace('null', '');
@@ -836,6 +817,32 @@
         listContainer.innerHTML = listHtml;
     }
 
+    // ==========================================
+    // 按照您的文档，彻底重构的时间格式化与 ICS 生成
+    // ==========================================
+
+    // 生成本地时区的时间字符串 (不带 Z) 例如: 20261103T000000
+    function formatDateToLocalString(date) {
+        const pad = (num) => String(num).padStart(2, '0');
+        return date.getFullYear() +
+               pad(date.getMonth() + 1) +
+               pad(date.getDate()) + 'T' +
+               pad(date.getHours()) +
+               pad(date.getMinutes()) +
+               pad(date.getSeconds());
+    }
+
+    // 生成 UTC 时间字符串 (带 Z)，仅供 DTSTAMP 使用
+    function formatDateToUTC(date) {
+        const pad = (num) => String(num).padStart(2, '0');
+        return date.getUTCFullYear() +
+               pad(date.getUTCMonth() + 1) +
+               pad(date.getUTCDate()) + 'T' +
+               pad(date.getUTCHours()) +
+               pad(date.getUTCMinutes()) +
+               pad(date.getUTCSeconds()) + 'Z';
+    }
+
     function generateICS() {
         extractData(); 
 
@@ -859,11 +866,7 @@
             if(!med.name || med.name === 'null' || med.name === 'undefined' || !med.times || med.times.length === 0) return;
 
             const safeStartDate = parseLocalDate(med.startLocal);
-            // 如果解析失败，直接跳过这个药，绝不生成 00:00 的无效事件
-            if (!safeStartDate) {
-                console.warn(`跳过药品 ${med.name}，因为日期格式无法解析: ${med.startLocal}`);
-                return;
-            }
+            if (!safeStartDate) return;
 
             let rruleExtra = "";
             if (med.freqType === 'WEEKLY' && med.weekDays && med.weekDays.length > 0) {
@@ -876,7 +879,10 @@
             let rruleEnd = "";
             if (med.endType === 'UNTIL' && med.endDateStr) {
                 let endDate = new Date(med.endDateStr + "T23:59:59");
-                if(!isNaN(endDate.getTime())) rruleEnd = `;UNTIL=${formatDateToUTC(endDate)}`;
+                if(!isNaN(endDate.getTime())) {
+                    // 【修复】UNTIL 去掉 Z，使用本地时间
+                    rruleEnd = `;UNTIL=${formatDateToLocalString(endDate)}`;
+                }
             } else if (med.endType === 'COUNT' && med.endCount) {
                 rruleEnd = `;COUNT=${med.endCount}`;
             }
@@ -903,16 +909,16 @@
                 const uid = Math.random().toString(36).substring(2) + "@medschedule";
                 const freqLabel = validFreq === 'DAILY' ? '天' : validFreq === 'WEEKLY' ? '周' : '月';
                 
+                // 【修复】DESCRIPTION 换行必须用字面的 \n，不能用真正的换行符
                 let descStr = `每次用量：${med.dose}\\n服药时间：${timeLabel}\\n服药周期：每 ${validInterval} ${freqLabel}`;
                 if (med.note) descStr += `\\n医嘱备注：${med.note}`;
-                descStr = descStr.replace(/[^\x20-\x7E\u4e00-\u9fa5\n\r\\:：,，。.、|]/g, ''); 
 
                 icsContent.push(
                     "BEGIN:VEVENT",
                     `UID:${uid}`,
-                    `DTSTAMP:${formatDateToUTC(new Date())}`,
-                    `DTSTART:${formatDateToUTC(dtStart)}`,
-                    `DTEND:${formatDateToUTC(dtEnd)}`,
+                    `DTSTAMP:${formatDateToUTC(new Date())}`, // DTSTAMP 必须是 UTC
+                    `DTSTART;TZID=Asia/Shanghai:${formatDateToLocalString(dtStart)}`, // 【修复】本地时间 + TZID
+                    `DTEND;TZID=Asia/Shanghai:${formatDateToLocalString(dtEnd)}`,     // 【修复】本地时间 + TZID
                     `SUMMARY:💊 ${med.name}`,
                     `DESCRIPTION:${descStr}`,
                     rruleString,
@@ -940,11 +946,7 @@
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        alert(`✅ 成功生成日历文件，共包含 ${eventCount} 个事件。\n\n⚠️ 提示：如果您的手机里还残留着旧版本的日历事件，请先在手机日历中删除该日历账户，再重新导入此文件。`);
-    }
-
-    function formatDateToUTC(date) {
-        return date.getUTCFullYear() + ('0' + (date.getUTCMonth() + 1)).slice(-2) + ('0' + date.getUTCDate()).slice(-2) + 'T' + ('0' + date.getUTCHours()).slice(-2) + ('0' + date.getUTCMinutes()).slice(-2) + ('0' + date.getUTCSeconds()).slice(-2) + 'Z';
+        alert(`✅ 成功生成日历文件，共包含 ${eventCount} 个事件。\n\n⚠️ 提示：请在手机日历中删除旧的出问题的日历，再导入此新文件。`);
     }
 </script>
 </body>
