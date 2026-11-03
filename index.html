@@ -52,7 +52,7 @@
         
         .section-title-actions { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
 
-        /* 紧凑型设置区，让药品清单更高 */
+        /* 紧凑型设置区 */
         .compact-settings { padding: 14px 20px; }
         .compact-settings .form-grid { 
             display: grid; 
@@ -129,8 +129,8 @@
         .event-dots { display: flex; gap: 3px; flex-wrap: wrap; margin-top: auto; }
         .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--primary); }
         
-        .day-detail-list { padding: 0 16px; background: #FFF; overflow-y: auto; flex: 1; }
-        .detail-title { font-size: 15px; font-weight: 700; padding:16px 0; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px; position: sticky; top: 0; background: #FFF; z-index: 2; }
+        .day-detail-list { padding: 16px; background: #FFF; overflow-y: auto; flex: 1; }
+        .detail-title { font-size: 15px; font-weight: 700; margin-bottom: 12px; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px; position: sticky; top: 0; background: #FFF; z-index: 2; }
         .list-item { display: flex; align-items: flex-start; gap: 12px; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px; margin-bottom: 8px; background: #F9FAFB; }
         .item-time { font-weight: 700; color: var(--primary-hover); min-width: 45px; font-size: 13px; }
         .item-info { flex: 1; }
@@ -399,6 +399,9 @@
         }
 
         medsData.forEach((med, index) => {
+            // 容错：如果是异常数据，不展示在 UI 列表里
+            if(!med.name || med.name === 'null') return; 
+
             const timeStr = med.times.length > 0 ? med.times.join('、') : '未选时间';
             let freqStr = "";
             if (med.freqType === 'DAILY') freqStr = med.interval === 1 ? '每天' : `每 ${med.interval} 天`;
@@ -461,18 +464,18 @@
         if (index >= 0) {
             document.getElementById('modalTitle').textContent = '编辑药品';
             const med = medsData[index];
-            document.getElementById('modalName').value = med.name;
-            document.getElementById('modalDose').value = med.dose;
-            document.querySelectorAll('.m-time').forEach(el => el.checked = med.times.includes(el.value));
-            document.getElementById('modalStart').value = med.startLocal;
-            document.getElementById('modalFreqType').value = med.freqType;
-            document.getElementById('modalInterval').value = med.interval;
-            document.querySelectorAll('.m-weekday').forEach(el => el.checked = med.weekDays.includes(el.value));
-            document.getElementById('modalMonthDay').value = med.monthDay;
-            document.getElementById('modalEndType').value = med.endType;
-            document.getElementById('modalEndDate').value = med.endDateStr;
-            document.getElementById('modalEndCount').value = med.endCount;
-            document.getElementById('modalNote').value = med.note;
+            document.getElementById('modalName').value = med.name || '';
+            document.getElementById('modalDose').value = med.dose || '';
+            document.querySelectorAll('.m-time').forEach(el => el.checked = med.times && med.times.includes(el.value));
+            document.getElementById('modalStart').value = med.startLocal || '';
+            document.getElementById('modalFreqType').value = med.freqType || 'DAILY';
+            document.getElementById('modalInterval').value = med.interval || '1';
+            document.querySelectorAll('.m-weekday').forEach(el => el.checked = med.weekDays && med.weekDays.includes(el.value));
+            document.getElementById('modalMonthDay').value = med.monthDay || '1';
+            document.getElementById('modalEndType').value = med.endType || 'NEVER';
+            document.getElementById('modalEndDate').value = med.endDateStr || '';
+            document.getElementById('modalEndCount').value = med.endCount || '10';
+            document.getElementById('modalNote').value = med.note || '';
             
             updateModalFreqUI();
             updateModalEndUI();
@@ -502,7 +505,7 @@
 
     function saveMedication() {
         const name = document.getElementById('modalName').value.trim();
-        if (!name) { alert("请输入药品名称！"); return; }
+        if (!name || name === 'null') { alert("请输入合法的药品名称！"); return; }
 
         const times = Array.from(document.querySelectorAll('.m-time:checked')).map(el => el.value);
         if (times.length === 0) { alert("请至少选择一个服药时间！"); return; }
@@ -512,11 +515,11 @@
             dose: document.getElementById('modalDose').value.trim() || '按医嘱',
             times: times,
             startLocal: document.getElementById('modalStart').value || new Date().toISOString().slice(0,16),
-            freqType: document.getElementById('modalFreqType').value,
+            freqType: document.getElementById('modalFreqType').value || 'DAILY',
             interval: parseInt(document.getElementById('modalInterval').value) || 1,
             weekDays: Array.from(document.querySelectorAll('.m-weekday:checked')).map(el => el.value),
             monthDay: parseInt(document.getElementById('modalMonthDay').value) || 1,
-            endType: document.getElementById('modalEndType').value,
+            endType: document.getElementById('modalEndType').value || 'NEVER',
             endDateStr: document.getElementById('modalEndDate').value,
             endCount: parseInt(document.getElementById('modalEndCount').value) || 10,
             note: document.getElementById('modalNote').value.trim()
@@ -557,6 +560,8 @@
         let csvContent = "\uFEFF药品名称,每次用量,服药时间,重复频率,重复周期,星期几,每月几号,结束类型,结束日期,结束次数,开始时间,医嘱备注\n";
 
         medsData.forEach(med => {
+            if(!med.name || med.name === 'null') return; 
+            
             const timeLabelStr = med.times.join('、');
             let freqTypeStr = med.freqType === 'DAILY' ? '按天' : med.freqType === 'WEEKLY' ? '按周' : '按月';
             const dayMap = { 'MO':'周一', 'TU':'周二', 'WE':'周三', 'TH':'周四', 'FR':'周五', 'SA':'周六', 'SU':'周日' };
@@ -566,8 +571,8 @@
 
             const row = [
                 `"${med.name}"`, `"${med.dose}"`, `"${timeLabelStr}"`, `"${freqTypeStr}"`,
-                med.interval, `"${weekStr}"`, med.monthDay || '', `"${endTypeStr}"`,
-                `"${med.endDateStr || ''}"`, med.endCount || '', `"${startStr}"`, `"${med.note}"`
+                med.interval || 1, `"${weekStr}"`, med.monthDay || '', `"${endTypeStr}"`,
+                `"${med.endDateStr || ''}"`, med.endCount || '', `"${startStr}"`, `"${med.note || ''}"`
             ].join(",");
             
             csvContent += row + "\n";
@@ -597,20 +602,23 @@
 
             for (let i = 1; i < rows.length; i++) {
                 const row = rows[i];
-                if (row.length < 11 || !row[0].trim()) continue; 
+                if (row.length < 3) continue; 
 
-                const name = row[0].trim();
-                const dose = row[1].trim();
-                const timesStr = row[2].trim();
-                const freqStr = row[3].trim();
+                const name = (row[0] || '').trim();
+                // 【严格拦截】过滤掉无名字、或者名字叫 "null" 的幽灵数据
+                if (!name || name === 'null' || name === 'undefined') continue;
+
+                const dose = (row[1] || '').trim();
+                const timesStr = (row[2] || '').trim();
+                const freqStr = (row[3] || '').trim();
                 const interval = parseInt(row[4]) || 1;
-                const weekStr = row[5].trim();
+                const weekStr = (row[5] || '').trim();
                 const monthDay = parseInt(row[6]) || 1;
-                const endTypeStr = row[7].trim();
-                const endDate = row[8].trim();
+                const endTypeStr = (row[7] || '').trim();
+                const endDate = (row[8] || '').trim();
                 const endCount = parseInt(row[9]) || 10;
-                let startTime = row[10].trim();
-                const note = row[11] ? row[11].trim() : '';
+                let startTime = (row[10] || '').trim();
+                const note = (row[11] || '').trim();
 
                 if (startTime.includes('/')) {
                     const d = new Date(startTime);
@@ -621,6 +629,8 @@
                 }
 
                 const timesList = timesStr ? timesStr.split(/[、,，]/) : [];
+                if(timesList.length === 0) continue; // 必须要有服药时间
+
                 let freqType = "DAILY";
                 if (freqStr.includes("周")) freqType = "WEEKLY";
                 if (freqStr.includes("月")) freqType = "MONTHLY";
@@ -635,11 +645,16 @@
                 if (endType === 'COUNT') endValue = endCount;
 
                 newMeds.push({
-                    name, dose, times: timesList, 
+                    name, dose: dose || '按医嘱', times: timesList, 
                     startLocal: startTime.replace(' ', 'T') || new Date().toISOString().slice(0,16),
                     freqType, interval, weekDays: weekDaysList, monthDay,
                     endType, endDateStr: endValue, endCount: endValue, note
                 });
+            }
+
+            if(newMeds.length === 0) {
+                alert("导入失败：表格中未能解析出有效的药品数据。请检查表头和内容是否完整。");
+                return;
             }
 
             medsData = newMeds;
@@ -647,7 +662,7 @@
             autoRefreshPreview();
             
             event.target.value = '';
-            alert("表格导入成功！");
+            alert(`表格导入成功！共载入 ${medsData.length} 种药品。`);
         };
         reader.readAsText(file, 'UTF-8');
     }
@@ -676,6 +691,8 @@
     function getEventsForDate(targetDate) {
         let events = [];
         medsData.forEach(med => {
+            if(!med.name || med.name === 'null' || !med.times || med.times.length === 0) return;
+
             const startBase = new Date(med.startLocal);
             const safeStartBase = isNaN(startBase.getTime()) ? new Date() : startBase;
             
@@ -685,18 +702,18 @@
 
             if (diffDays >= 0) {
                 if (med.freqType === 'DAILY') {
-                    if (diffDays % med.interval === 0) isMatch = true;
+                    if (diffDays % (med.interval || 1) === 0) isMatch = true;
                 } else if (med.freqType === 'WEEKLY') {
                     const currentWeekDay = ['SU','MO','TU','WE','TH','FR','SA'][targetDate.getDay()];
                     const weeksPassed = Math.floor(diffDays / 7);
-                    if(med.weekDays.includes(currentWeekDay) && weeksPassed % med.interval === 0) isMatch = true;
+                    if(med.weekDays.includes(currentWeekDay) && weeksPassed % (med.interval || 1) === 0) isMatch = true;
                 } else if (med.freqType === 'MONTHLY') {
                     if (targetDate.getDate() === med.monthDay) {
                         const monthsPassed = (targetDate.getFullYear() - safeStartBase.getFullYear()) * 12 + (targetDate.getMonth() - safeStartBase.getMonth());
-                        if(monthsPassed >= 0 && monthsPassed % med.interval === 0) isMatch = true;
+                        if(monthsPassed >= 0 && monthsPassed % (med.interval || 1) === 0) isMatch = true;
                     } else if (med.monthDay > 28 && targetDate.getDate() === new Date(targetDate.getFullYear(), targetDate.getMonth() + 1, 0).getDate()) {
                         const monthsPassed = (targetDate.getFullYear() - safeStartBase.getFullYear()) * 12 + (targetDate.getMonth() - safeStartBase.getMonth());
-                        if(monthsPassed >= 0 && monthsPassed % med.interval === 0) isMatch = true;
+                        if(monthsPassed >= 0 && monthsPassed % (med.interval || 1) === 0) isMatch = true;
                     }
                 }
             }
@@ -709,8 +726,12 @@
             if (isMatch) {
                 med.times.forEach(timeLabel => {
                     const timeStr = dailyTimesConfig[timeLabel];
-                    if(timeStr) {
-                        const [h, m] = timeStr.split(':').map(Number);
+                    if(timeStr && timeStr.includes(':')) {
+                        const parts = timeStr.split(':');
+                        const h = parseInt(parts[0]);
+                        const m = parseInt(parts[1]);
+                        if (isNaN(h) || isNaN(m)) return;
+
                         let dtStart = new Date(targetDate);
                         dtStart.setHours(h, m, 0, 0);
                         
@@ -831,37 +852,54 @@
         let eventCount = 0;
 
         medsData.forEach((med) => {
+            // 【深度拦截】过滤无效数据
+            if(!med.name || med.name === 'null' || !med.times || med.times.length === 0) return;
+
             let rruleExtra = "";
-            if (med.freqType === 'WEEKLY') rruleExtra = `;BYDAY=${med.weekDays.join(',')}`;
-            if (med.freqType === 'MONTHLY') rruleExtra = `;BYMONTHDAY=${med.monthDay}`;
+            if (med.freqType === 'WEEKLY' && med.weekDays && med.weekDays.length > 0) {
+                rruleExtra = `;BYDAY=${med.weekDays.join(',')}`;
+            }
+            if (med.freqType === 'MONTHLY' && med.monthDay) {
+                rruleExtra = `;BYMONTHDAY=${med.monthDay}`;
+            }
 
             let rruleEnd = "";
             if (med.endType === 'UNTIL' && med.endDateStr) {
                 let endDate = new Date(med.endDateStr + "T23:59:59");
                 if(!isNaN(endDate.getTime())) rruleEnd = `;UNTIL=${formatDateToUTC(endDate)}`;
-            } else if (med.endType === 'COUNT') {
+            } else if (med.endType === 'COUNT' && med.endCount) {
                 rruleEnd = `;COUNT=${med.endCount}`;
             }
 
-            let rruleString = `RRULE:FREQ=${med.freqType};INTERVAL=${med.interval}${rruleExtra}${rruleEnd}`;
+            let validFreq = ['DAILY', 'WEEKLY', 'MONTHLY'].includes(med.freqType) ? med.freqType : 'DAILY';
+            let validInterval = parseInt(med.interval) || 1;
+            if(validInterval < 1) validInterval = 1;
+
+            let rruleString = `RRULE:FREQ=${validFreq};INTERVAL=${validInterval}${rruleExtra}${rruleEnd}`;
 
             med.times.forEach(timeLabel => {
                 const timeStr = dailyTimesConfig[timeLabel];
-                if(!timeStr) return;
+                // 时间必须存在且包含冒号
+                if(!timeStr || typeof timeStr !== 'string' || !timeStr.includes(':')) return;
 
-                const [hour, minute] = timeStr.split(':').map(Number);
+                const parts = timeStr.split(':');
+                const hour = parseInt(parts[0], 10);
+                const minute = parseInt(parts[1], 10);
+                if (isNaN(hour) || isNaN(minute)) return; // 解析失败跳过
+
                 let baseStartStr = med.startLocal || new Date().toISOString().slice(0,16);
                 let dtStart = new Date(baseStartStr);
                 
+                // 如果日期彻底无效，以今天为起点
                 if(isNaN(dtStart.getTime())) dtStart = new Date();
 
                 dtStart.setHours(hour, minute, 0, 0);
                 let dtEnd = new Date(dtStart.getTime() + 5 * 60000); 
 
                 const uid = Math.random().toString(36).substring(2) + "@medschedule";
-                const freqLabel = med.freqType === 'DAILY' ? '天' : med.freqType === 'WEEKLY' ? '周' : '月';
+                const freqLabel = validFreq === 'DAILY' ? '天' : validFreq === 'WEEKLY' ? '周' : '月';
                 
-                let description = `每次用量：${med.dose}\\n服药时间：${timeLabel}\\n服药周期：每 ${med.interval} ${freqLabel}`;
+                let description = `每次用量：${med.dose}\\n服药时间：${timeLabel}\\n服药周期：每 ${validInterval} ${freqLabel}`;
                 if (med.note) description += `\\n医嘱备注：${med.note}`;
 
                 icsContent.push(
@@ -885,7 +923,7 @@
         });
 
         if(eventCount === 0) {
-            alert("生成的日历中没有任何事件！请检查药品是否选择了服药时间。");
+            alert("生成的日历中没有任何有效事件！请检查药品名称是否为空，或者是否勾选了服药时间。");
             return;
         }
 
@@ -897,7 +935,7 @@
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        alert(`✅ 成功生成日历文件，共包含 ${eventCount} 个事件。`);
+        alert(`✅ 成功生成日历文件，共包含 ${eventCount} 个有效事件。`);
     }
 
     function formatDateToUTC(date) {
