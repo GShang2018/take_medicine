@@ -11,7 +11,7 @@ DTSTAMP:20261103T145423Z
 DTSTART;TZID=Asia/Shanghai:20261103T080000
 DTEND;TZID=Asia/Shanghai:20261103T080500
 SUMMARY:💊 阿司匹林肠溶片
-DESCRIPTION:每次用量：1粒\n服药时间：早饭后\n服药周期：每 1 天\n医嘱备注：终身复用，定期复查血常规，注意有无皮下出血、消化道出血及其他脏器出血，若出现则停服，并来医院就诊。
+DESCRIPTION:每次用量：1粒\n服药时间：早饭后\n服药周期：每 1 天\n医嘱备注：终身服用，定期复查血常规，注意有无皮下出血、消化道出血及其他脏器出血，若出现则停服，并来医院就诊。
 RRULE:FREQ=DAILY;INTERVAL=1
 BEGIN:VALARM
 ACTION:DISPLAY
@@ -25,7 +25,7 @@ DTSTAMP:20261103T145423Z
 DTSTART;TZID=Asia/Shanghai:20261103T080000
 DTEND;TZID=Asia/Shanghai:20261103T080500
 SUMMARY:💊 硫酸氢氯吡格雷片
-DESCRIPTION:每次用量：1粒\n服药时间：早饭后\n服药周期：每 1 天\n医嘱备注：出院后（2026.11.2）与阿司匹林肠溶片继续联合复用13天，予以停用。
+DESCRIPTION:每次用量：1粒\n服药时间：早饭后\n服药周期：每 1 天\n医嘱备注：出院后（2026.11.2）与阿司匹林肠溶片继续联合服用13天，予以停用。
 RRULE:FREQ=DAILY;INTERVAL=1;UNTIL=20261115T235959
 BEGIN:VALARM
 ACTION:DISPLAY
@@ -151,7 +151,7 @@ DTSTAMP:20261103T145423Z
 DTSTART;TZID=Asia/Shanghai:20261103T080000
 DTEND;TZID=Asia/Shanghai:20261103T080500
 SUMMARY:💊 丁苯酞软胶囊
-DESCRIPTION:每次用量：2粒\n服药时间：早饭后\n服药周期：每 1 天\n医嘱备注：建议复用3-6个月序贯治疗。（自2026.11.3起）
+DESCRIPTION:每次用量：2粒\n服药时间：早饭后\n服药周期：每 1 天\n医嘱备注：建议服用3-6个月序贯治疗。（自2026.11.3起）
 RRULE:FREQ=DAILY;INTERVAL=1;UNTIL=20270203T235959
 BEGIN:VALARM
 ACTION:DISPLAY
@@ -165,7 +165,7 @@ DTSTAMP:20261103T145423Z
 DTSTART;TZID=Asia/Shanghai:20261103T123000
 DTEND;TZID=Asia/Shanghai:20261103T123500
 SUMMARY:💊 丁苯酞软胶囊
-DESCRIPTION:每次用量：2粒\n服药时间：午饭后\n服药周期：每 1 天\n医嘱备注：建议复用3-6个月序贯治疗。（自2026.11.3起）
+DESCRIPTION:每次用量：2粒\n服药时间：午饭后\n服药周期：每 1 天\n医嘱备注：建议服用3-6个月序贯治疗。（自2026.11.3起）
 RRULE:FREQ=DAILY;INTERVAL=1;UNTIL=20270203T235959
 BEGIN:VALARM
 ACTION:DISPLAY
@@ -179,7 +179,7 @@ DTSTAMP:20261103T145423Z
 DTSTART;TZID=Asia/Shanghai:20261103T183000
 DTEND;TZID=Asia/Shanghai:20261103T183500
 SUMMARY:💊 丁苯酞软胶囊
-DESCRIPTION:每次用量：2粒\n服药时间：晚饭后\n服药周期：每 1 天\n医嘱备注：建议复用3-6个月序贯治疗。（自2026.11.3起）
+DESCRIPTION:每次用量：2粒\n服药时间：晚饭后\n服药周期：每 1 天\n医嘱备注：建议服用3-6个月序贯治疗。（自2026.11.3起）
 RRULE:FREQ=DAILY;INTERVAL=1;UNTIL=20270203T235959
 BEGIN:VALARM
 ACTION:DISPLAY
@@ -193,7 +193,7 @@ DTSTAMP:20261103T145423Z
 DTSTART;TZID=Asia/Shanghai:20261103T210000
 DTEND;TZID=Asia/Shanghai:20261103T210500
 SUMMARY:💊 阿托伐他汀钙片
-DESCRIPTION:每次用量：1粒\n服药时间：晚上/睡前\n服药周期：每 1 天\n医嘱备注：终身复用，注意定期复查肝功能、血脂、心肌酶，若出现肌肉酸痛则停服，并来医院就诊。
+DESCRIPTION:每次用量：1粒\n服药时间：晚上/睡前\n服药周期：每 1 天\n医嘱备注：终身服用，注意定期复查肝功能、血脂、心肌酶，若出现肌肉酸痛则停服，并来医院就诊。
 RRULE:FREQ=DAILY;INTERVAL=1
 BEGIN:VALARM
 ACTION:DISPLAY
