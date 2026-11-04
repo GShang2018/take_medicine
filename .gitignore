@@ -1,0 +1,54 @@
+# Android / Gradle 构建产物
+.gradle/
+**/build/
+local.properties
+captures/
+.externalNativeBuild/
+.cxx/
+
+# 打包产物（需要发版时再单独上传 APK）
+*.apk
+*.aab
+*.ap_
+*.dex
+*.class
+*.hprof
+
+# 签名文件：绝对不要提交到 Git
+*.jks
+*.keystore
+keystore.properties
+
+# IDE / 编辑器
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.settings/
+.project
+.classpath
+
+# 临时文件 / 调试输出
+*.log
+*.tmp
+*.bak
+ui*.xml
+ui-*.txt
+due*.png
+prefs-seed.xml
+
+# 本地 UI 调试脚本（含本机 ADB / 项目绝对路径）
+android/tools/
+
+# 开发过程截图（README 未引用；如要作为文档资源，删除下面一行）
+screenshots/
+
+# 系统文件
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Python 工具缓存
+__pycache__/
+*.py[cod]

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="teal">#10B981</color>
+    <color name="teal_dark">#059669</color>
+    <color name="teal_deep">#065F46</color>
+    <color name="teal_light">#ECFDF5</color>
+    <color name="teal_mid">#D1FAE5</color>
+    <color name="bg">#F3F4F6</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="text">#1F2937</color>
+    <color name="text_muted">#6B7280</color>
+    <color name="text_soft">#9CA3AF</color>
+    <color name="border">#E5E7EB</color>
+    <color name="danger">#EF4444</color>
+    <color name="danger_bg">#FEF2F2</color>
+    <color name="amber">#B45309</color>
+    <color name="amber_bg">#FEF3C7</color>
+    <color name="indigo">#4F46E5</color>
+    <color name="indigo_bg">#EEF2FF</color>
+    <color name="white">#FFFFFF</color>
+    <color name="alarm_bg">#0B1220</color>
+    <color name="alarm_surface">#131F33</color>
+    <color name="ic_launcher_bg">#10B981</color>
+</resources>

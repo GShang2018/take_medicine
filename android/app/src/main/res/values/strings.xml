@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">吃药提醒</string>
+    <string name="nav_today">今日</string>
+    <string name="nav_meds">药品</string>
+    <string name="nav_settings">设置</string>
+    <string name="add_med">添加药品</string>
+    <string name="edit_med">编辑药品</string>
+    <string name="save">保存</string>
+    <string name="cancel">取消</string>
+    <string name="delete">删除</string>
+    <string name="taken">已服用</string>
+    <string name="mark_taken">标记已服</string>
+    <string name="undo_taken">撤销</string>
+    <string name="snooze">稍后提醒</string>
+    <string name="dismiss">关闭</string>
+    <string name="next_reminder">下一次提醒</string>
+    <string name="no_next">今天已经没有服药安排了</string>
+    <string name="upcoming">接下来 7 天</string>
+    <string name="empty_meds">还没有药品，点击右下角 + 添加</string>
+    <string name="empty_today">暂无服药安排</string>
+    <string name="alarm_title">该吃药了</string>
+    <string name="alarm_channel">服药闹钟</string>
+    <string name="alarm_channel_desc">到点以闹钟方式提醒服药</string>
+    <string name="notify_channel">服药通知</string>
+    <string name="notify_channel_desc">普通服药提醒通知</string>
+    <string name="perm_notify">通知权限</string>
+    <string name="perm_alarm">精确闹钟</string>
+    <string name="perm_fullscreen">全屏提醒</string>
+    <string name="perm_battery">后台运行</string>
+    <string name="perm_calendar">日历权限</string>
+    <string name="enabled">已开启</string>
+    <string name="disabled">未开启</string>
+    <string name="go_settings">去开启</string>
+    <string name="import_plan">导入服药方案</string>
+    <string name="sync_calendar">同步到系统日历</string>
+    <string name="remove_calendar">移除日历事件</string>
+    <string name="settings">设置</string>
+    <string name="about">关于</string>
+    <string name="about_desc">吃药提醒 1.0.0 · 本地运行，不上传任何数据</string>
+    <string name="test_alarm">测试闹钟（5 秒后）</string>
+    <string name="calendar_none">未同步</string>
+    <string name="calendar_synced">已同步 %1$d 个日历事件</string>
+</resources>
