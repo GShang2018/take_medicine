@@ -321,6 +321,7 @@
     .feature,.btn{transition:none}
   }
 </style>
+<script src="download.js"></script>
 </head>
 <body>
 <a class="skip" href="#main">跳到主要内容</a>
@@ -352,14 +353,14 @@
         <h1>到点就响，<br>不再漏吃<em>一次药</em></h1>
         <p class="hero-sub">吃药提醒用系统闹钟的方式叫你吃药：锁屏也会亮屏提醒，解锁时还能从底部弹出卡片。家人的药各自成账户，导入一份 <em>.ics</em> 就自动排好每天该吃的每一顿。</p>
         <div class="hero-actions">
-          <a class="btn" href="吃药提醒-1.5.11.apk" download="吃药提醒-1.5.11.apk" type="application/vnd.android.package-archive" aria-label="下载吃药提醒 1.5.11 安卓安装包">
+          <a class="btn" data-dl="link" href="#download" type="application/vnd.android.package-archive" aria-label="下载安卓安装包">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M5 21h14"/></svg>
-            下载 APK · 1.5.11（4.4 MB）
+            <span data-dl="cta">下载 APK</span>
           </a>
           <a class="btn btn-ghost" href="#screens">先看看界面</a>
         </div>
         <div class="hero-meta">
-          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Android 8.0 及以上</span>
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span data-dl="minAndroidText">Android</span></span>
           <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>无需注册</span>
           <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>数据不上传</span>
         </div>
@@ -607,7 +608,7 @@
         <details>
           <summary>支持 iPhone 吗？</summary>
           <div class="answer">
-            <p>目前只有安卓版，支持 Android 8.0 及以上。iPhone 用户可以在电脑上打开<a href="web.html">网页版 .ics 生成器</a>生成 <code>.ics</code>，再导入系统日历使用。</p>
+            <p>目前只有安卓版，支持 <span data-dl="minAndroidText">Android</span>。iPhone 用户可以在电脑上打开<a href="web.html">网页版 .ics 生成器</a>生成 <code>.ics</code>，再导入系统日历使用。</p>
           </div>
         </details>
         <details>
@@ -626,21 +627,23 @@
       <div class="download-card" data-reveal>
         <div>
           <h2>下载安装，今天就少忘一次</h2>
-          <p class="lead">最新版本 1.5.11，支持 Android 8.0 及以上。覆盖安装会保留原有药品、账户和服药记录。</p>
+          <p class="lead">最新版本 <span data-dl="version">—</span>，支持 <span data-dl="minAndroidText">Android</span>。覆盖安装会保留原有药品、账户和服药记录。</p>
           <div class="dl-actions">
-            <a class="btn btn-on-dark" href="吃药提醒-1.5.11.apk" download="吃药提醒-1.5.11.apk" type="application/vnd.android.package-archive">
+            <a class="btn btn-on-dark" data-dl="link" href="#download" type="application/vnd.android.package-archive" aria-label="下载安卓安装包">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M5 21h14"/></svg>
-              下载 APK · 4.4 MB
+              <span data-dl="ctaSize">下载 APK</span>
             </a>
             <a class="btn btn-ghost" href="#notes">本次更新了什么</a>
           </div>
+          <noscript><p class="dl-note">下载信息由 <code>download.js</code> 读取，需要浏览器启用 JavaScript 才能显示。</p></noscript>
           <p class="dl-note">如果浏览器提示「无法下载」，请右键链接选择「链接另存为」。</p>
+          <p class="dl-note" id="dl-error" hidden style="color:#FFC98B">下载配置没有加载成功，请检查同目录下的 <code>download.js</code>。</p>
           <dl class="specs">
-            <div class="spec"><dt>版本</dt><dd>1.5.11（versionCode 25）</dd></div>
-            <div class="spec"><dt>更新日期</dt><dd>2026-11-07</dd></div>
-            <div class="spec"><dt>安装包大小</dt><dd>约 4.4 MB</dd></div>
-            <div class="spec"><dt>系统要求</dt><dd>Android 8.0 及以上</dd></div>
-            <div class="spec"><dt>包名</dt><dd>com.medremind.app</dd></div>
+            <div class="spec"><dt>版本</dt><dd data-dl="versionWithCode">—</dd></div>
+            <div class="spec"><dt>更新日期</dt><dd data-dl="released">—</dd></div>
+            <div class="spec"><dt>安装包大小</dt><dd data-dl="sizeText">—</dd></div>
+            <div class="spec"><dt>系统要求</dt><dd data-dl="minAndroidText">—</dd></div>
+            <div class="spec"><dt>包名</dt><dd data-dl="packageName">—</dd></div>
             <div class="spec"><dt>价格</dt><dd>免费 · 无广告</dd></div>
           </dl>
         </div>
@@ -651,8 +654,8 @@
             <li>在文件管理器里打开安装；提示「未知来源」时，允许对应的浏览器或文件管理器安装。</li>
             <li>首次打开按引导开启通知、精确闹钟；需要解锁时弹卡片，再开启「显示在其他应用上层」。</li>
           </ol>
-          <p class="update-note" id="notes"><b>1.5.11 更新：</b>修复首页没有药品时，提示文字让你去找一个并不存在的「+」按钮；现在提示会引导到「药品」页，点一下就能直接跳过去添加。</p>
-          <p class="hash">SHA-256<br><code>304e812f6b34722b745b151ce4836cded74233584851b18a44d6248bd7a9046b</code></p>
+          <p class="update-note" id="notes"><b><span data-dl="version">—</span> 更新：</b><span data-dl="updateNote"></span></p>
+          <p class="hash">SHA-256<br><code data-dl="sha256">—</code></p>
         </div>
       </div>
     </div>
@@ -677,12 +680,49 @@
       </nav>
     </div>
     <div class="foot-fine">
-      <span>包名 com.medremind.app · 版本 1.5.11</span>
+      <span>包名 <span data-dl="packageName">—</span> · 版本 <span data-dl="version">—</span></span>
       <span>本页不加载第三方字体与脚本，也不收集任何访问信息。</span>
       <span>© <span id="year">2026</span> 吃药提醒</span>
     </div>
   </div>
 </footer>
+
+<script>
+/* 把 download.js 里的配置写进页面；要改版本/APK/大小/更新说明，只改 download.js */
+(function () {
+  var cfg = window.APP_DOWNLOAD;
+  if (!cfg) {
+    var err = document.getElementById('dl-error');
+    if (err) err.hidden = false;
+    return;
+  }
+  var text = {
+    version: cfg.version,
+    versionWithCode: cfg.version + '（versionCode ' + cfg.versionCode + '）',
+    released: cfg.released,
+    size: cfg.size,
+    sizeText: '约 ' + cfg.size,
+    minAndroidText: cfg.minAndroid + ' 及以上',
+    packageName: cfg.packageName,
+    sha256: cfg.sha256,
+    updateNote: cfg.updateNote,
+    cta: '下载 APK · ' + cfg.version + '（' + cfg.size + '）',
+    ctaSize: '下载 APK · ' + cfg.size
+  };
+  var href = cfg.url || cfg.file;
+  var fileName = cfg.file.replace(/^.*[\\/]/, '');
+  Array.prototype.forEach.call(document.querySelectorAll('[data-dl]'), function (el) {
+    var key = el.getAttribute('data-dl');
+    if (key === 'link') {
+      el.setAttribute('href', href);
+      el.setAttribute('download', fileName);
+      el.setAttribute('aria-label', '下载吃药提醒 ' + cfg.version + ' 安卓安装包');
+      return;
+    }
+    if (text[key] != null) el.textContent = text[key];
+  });
+})();
+</script>
 
 <script>
 (function () {

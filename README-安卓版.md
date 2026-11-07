@@ -7,15 +7,17 @@
 - 支持：Android 8.0 及以上（minSdk 26，targetSdk 34）
 - 数据本地保存；只有导入/订阅网址时会联网下载你指定的 `.ics`，不上传任何数据
 
-安装包：`吃药提醒-1.5.11.apk`（项目根目录）
+安装包：`dist/吃药提醒-1.5.11.apk`（项目根目录的 `dist/` 文件夹）
 
-产品介绍页：根目录的 `index.html`（网站首页），用浏览器打开即可查看功能、截图、隐私说明和下载按钮（页面依赖同目录的 `assets/` 截图和根目录的 APK）；网页版 .ics 日历生成器在 `web.html`。
+产品介绍页：根目录的 `index.html`（网站首页），用浏览器打开即可查看功能、截图、隐私说明和下载按钮（页面依赖同目录的 `assets/` 截图和 `dist/` 下的 APK）；网页版 .ics 日历生成器在 `web.html`。
+
+发新版本时，只要改根目录的 `download.js`（版本号、versionCode、APK 文件名、大小、日期、SHA-256、更新说明），首页的下载按钮和版本信息会自动更新。
 
 ---
 
 ## 一、安装
 
-1. 把 `吃药提醒-1.5.10.apk` 传到手机（微信文件传输助手 / 数据线 / 网盘均可）。
+1. 把 `dist/吃药提醒-1.5.11.apk` 传到手机（微信文件传输助手 / 数据线 / 网盘均可）。
 2. 点击安装。系统提示「未知来源」时，允许对应的文件管理器或浏览器安装。
 3. 打开「吃药提醒」。
 
@@ -186,7 +188,7 @@ gradlew.bat assembleRelease
 
 - 包名 / applicationId：`com.medremind.app`（debug 版后缀 `.debug`，可与正式版共存）
 - 签名：使用本地 `app/medremind.keystore`，密码放在本地 `android/keystore.properties`（两者都已加入 `.gitignore`，不会提交；请单独备份，丢失后无法覆盖安装）
-- 产物：`app/build/outputs/apk/release/app-release.apk`
+- 产物：`app/build/outputs/apk/release/app-release.apk`；`assembleRelease` 成功后会自动复制成项目根目录的 `dist/吃药提醒-<版本名>.apk`，根目录不再放 APK
 
 > 项目路径包含中文时 Gradle 会警告，`gradle.properties` 里已经加了 `android.overridePathCheck=true`。
 
