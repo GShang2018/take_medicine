@@ -16,7 +16,7 @@
 | `web.html` | 网页版服药日历生成器 |
 | `assets/` | 页面用截图 |
 | `download.js` | 下载信息配置 |
-| `dist/` | 发版 APK 输出目录（APK 不提交进 Git） |
+| `dist/` | 发版 APK 输出目录（当前版本已提交进仓库，页面可直接下载） |
 
 ## 构建
 
@@ -27,3 +27,9 @@ gradlew.bat assembleRelease
 ```
 
 构建成功后，APK 会自动复制并重命名为 `dist/吃药提醒-<版本名>.apk`。
+
+`.gitignore` 默认忽略 `*.apk`，发布新版本后需要手动把新安装包加入仓库：
+
+```bat
+git add -f dist/吃药提醒-<版本名>.apk
+```
