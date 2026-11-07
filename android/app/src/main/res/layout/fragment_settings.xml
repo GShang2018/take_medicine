@@ -269,7 +269,7 @@
             android:layout_marginTop="20dp"
             android:gravity="center"
             android:lineSpacingExtra="3dp"
-            android:text="吃药提醒 1.5.10\n数据保存在本机；仅在导入或订阅时联网"
+            android:text="吃药提醒 1.5.11\n数据保存在本机；仅在导入或订阅时联网"
             android:textColor="@color/text_soft"
             android:textSize="11sp" />
     </LinearLayout>

@@ -65,7 +65,7 @@ public class MedsFragment extends Fragment implements MedAdapter.Listener {
         }
         b.medsSummary.setText("「" + account.name + "」共 " + meds.size() + " 种药品 · 每天约 " + dosesPerDay + " 次");
         boolean empty = meds.isEmpty();
-        b.emptyState.setText("「" + account.name + "」还没有药品，点击右下角 + 添加，或在设置里导入");
+        b.emptyState.setText("「" + account.name + "」还没有药品，点击右下角 + 添加，或在「设置」里导入");
         b.emptyState.setVisibility(empty ? View.VISIBLE : View.GONE);
         b.medList.setVisibility(empty ? View.GONE : View.VISIBLE);
     }

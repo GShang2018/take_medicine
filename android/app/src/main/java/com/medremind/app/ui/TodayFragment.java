@@ -113,6 +113,13 @@ public class TodayFragment extends Fragment {
             }
         });
         b.accountChip.setOnClickListener(v -> AccountUi.show(this, this::refresh));
+        // 今日页没有「+」按钮：没药品时点提示直接跳到「药品」页添加。
+        b.emptyState.setOnClickListener(v -> {
+            Activity activity = getActivity();
+            if (activity instanceof MainActivity) {
+                ((MainActivity) activity).selectTab(R.id.nav_meds);
+            }
+        });
         refresh();
     }
 
@@ -171,9 +178,14 @@ public class TodayFragment extends Fragment {
         b.pager.setVisibility(empty ? View.GONE : View.VISIBLE);
         b.emptyState.setVisibility(empty ? View.VISIBLE : View.GONE);
         if (empty) {
-            b.emptyState.setText(meds.isEmpty()
-                    ? "「" + account.name + "」还没有药品，点击右下角 + 添加，或在「设置」里导入"
+            // 今日页不显示「+」按钮，提示必须引导到「药品」页，否则会让人找不到添加入口。
+            boolean noMeds = meds.isEmpty();
+            b.emptyState.setText(noMeds
+                    ? "「" + account.name + "」还没有药品\n点这里去「药品」页添加，或在「设置」里导入"
                     : "今天没有需要服用的药");
+            b.emptyState.setClickable(noMeds);
+            b.emptyState.setTextColor(context.getColor(
+                    noMeds ? R.color.teal_deep : R.color.text_soft));
             pagerAdapter.submit(0, new ArrayList<>());
             pagerAdapter.submit(1, new ArrayList<>());
             pagerAdapter.submit(2, new ArrayList<>());
