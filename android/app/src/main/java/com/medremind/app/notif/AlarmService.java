@@ -7,9 +7,6 @@ import android.app.Service;
 import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.Intent;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
-import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
@@ -63,7 +60,7 @@ public class AlarmService extends Service {
     private static final int NOTIFICATION_ID = 7301;
     private static final long TIMEOUT_MS = 10 * 60 * 1000L;
 
-    private MediaPlayer player;
+    private AlarmSound sound;
     private Vibrator vibrator;
     private PowerManager.WakeLock wakeLock;
     private PowerManager.WakeLock screenWakeLock;
@@ -356,34 +353,27 @@ public class AlarmService extends Service {
     }
 
     private void playSound() {
-        try {
-            Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-            if (uri == null) uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
-            if (uri == null) return;
-            AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-            if (am != null && am.getStreamVolume(AudioManager.STREAM_ALARM) == 0) {
-                int max = am.getStreamMaxVolume(AudioManager.STREAM_ALARM);
-                am.setStreamVolume(AudioManager.STREAM_ALARM, Math.max(1, (int) (max * 0.8f)), 0);
-            }
-            player = new MediaPlayer();
-            player.setAudioAttributes(Notifier.alarmAttributes());
-            player.setDataSource(this, uri);
-            player.setLooping(true);
-            player.prepare();
-            player.start();
-        } catch (Exception e) {
-            stopSound();
+        stopSound();
+        AppPrefs prefs = AppPrefs.get(this);
+        AlarmSound next = new AlarmSound(this);
+        sound = next;
+
+        if (AppPrefs.SOUND_VOICE.equals(prefs.soundMode())) {
+            // 语音播报播放 App 内置录音，和系统闹铃一样循环，直到关闭或 10 分钟超时。
+            // 不依赖手机的文字转语音引擎，没有 TTS 的手机也能用。
+            next.playVoice(true);
+            return;
         }
+
+        String setting = prefs.alarmSoundUri();
+        if (AppPrefs.RINGTONE_SILENT.equals(setting)) return;
+        next.playSystem(setting.isEmpty() ? null : Uri.parse(setting), true);
     }
 
     private void stopSound() {
-        if (player != null) {
-            try {
-                if (player.isPlaying()) player.stop();
-            } catch (Exception ignored) {
-            }
-            player.release();
-            player = null;
+        if (sound != null) {
+            sound.release();
+            sound = null;
         }
     }
 

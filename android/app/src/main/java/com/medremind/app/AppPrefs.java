@@ -284,6 +284,39 @@ public final class AppPrefs {
         sp.edit().putInt("snooze", Math.max(1, minutes)).apply();
     }
 
+    /** 提醒声音：内置语音（默认）或系统闹铃。 */
+    public static final String SOUND_SYSTEM = "system";
+    public static final String SOUND_VOICE = "voice";
+    /** 系统铃声设置为空表示跟随系统默认闹铃，silent 表示静音（仅震动）。 */
+    public static final String RINGTONE_SILENT = "silent";
+
+    public String soundMode() {
+        String mode = sp.getString("sound_mode", SOUND_VOICE);
+        return SOUND_SYSTEM.equals(mode) ? SOUND_SYSTEM : SOUND_VOICE;
+    }
+
+    public void setSoundMode(String mode) {
+        sp.edit().putString("sound_mode", SOUND_SYSTEM.equals(mode) ? SOUND_SYSTEM : SOUND_VOICE).apply();
+    }
+
+    /** 具体铃声的 content:// 地址；空串=默认闹铃，silent=静音。 */
+    public String alarmSoundUri() {
+        String value = sp.getString("alarm_sound_uri", "");
+        return value == null ? "" : value;
+    }
+
+    public String alarmSoundName() {
+        String value = sp.getString("alarm_sound_name", "");
+        return value == null ? "" : value;
+    }
+
+    public void setAlarmSound(String uri, String name) {
+        sp.edit()
+                .putString("alarm_sound_uri", uri == null ? "" : uri)
+                .putString("alarm_sound_name", name == null ? "" : name)
+                .apply();
+    }
+
     /** 写入系统日历时提前提醒的分钟数。 */
     public int calendarLead() {
         return sp.getInt("cal_lead", 5);

@@ -1,9 +1,12 @@
 package com.medremind.app.ui;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -32,6 +35,7 @@ import com.medremind.app.calendar.IcsImporter;
 import com.medremind.app.databinding.FragmentSettingsBinding;
 import com.medremind.app.model.Account;
 import com.medremind.app.model.Med;
+import com.medremind.app.notif.AlarmSound;
 
 import com.medremind.app.schedule.AlarmScheduler;
 import com.medremind.app.sync.SubscriptionSync;
@@ -52,6 +56,8 @@ public class SettingsFragment extends Fragment {
     private RowBuilder.Row addAccountRow;
     private RowBuilder.Row leadRow;
     private RowBuilder.Row snoozeRow;
+    private RowBuilder.Row soundModeRow;
+    private RowBuilder.Row ringtoneRow;
     private RowBuilder.Row overlayRow;
     private RowBuilder.Row syncRow;
     private RowBuilder.Row removeRow;
@@ -67,6 +73,19 @@ public class SettingsFragment extends Fragment {
 
     private final Handler main = new Handler(Looper.getMainLooper());
     private boolean pendingCalendarSync;
+    private AlarmSound preview;
+    private final Runnable stopPreviewTask = this::stopPreview;
+
+    private final ActivityResultLauncher<Intent> ringtonePicker =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() != Activity.RESULT_OK || result.getData() == null) return;
+                Intent data = result.getData();
+                Object extra = data.getExtras() == null
+                        ? null : data.getExtras().get(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
+                Uri uri = extra instanceof Uri ? (Uri) extra
+                        : extra instanceof String ? Uri.parse((String) extra) : null;
+                applyPickedRingtone(uri);
+            });
 
     private final ActivityResultLauncher<String[]> calendarPermission =
             registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), result -> {
@@ -108,6 +127,12 @@ public class SettingsFragment extends Fragment {
         refresh();
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        stopPreview();
+    }
+
     private void buildRows() {
         accountRow = RowBuilder.add(b.accountRows, "当前账户", "", "切换",
                 v -> AccountUi.show(this, this::onAccountChanged));
@@ -125,7 +150,11 @@ public class SettingsFragment extends Fragment {
 
         leadRow = RowBuilder.add(b.behaviorRows, "提前提醒", "", "调整", v -> chooseLead());
         snoozeRow = RowBuilder.add(b.behaviorRows, "稍后提醒时长", "", "调整", v -> chooseSnooze());
-        RowBuilder.add(b.behaviorRows, "测试闹钟", "5 秒后完整响一次，可按 Home 键锁屏验证", "测试", v -> {
+        soundModeRow = RowBuilder.add(b.behaviorRows, "提醒声音", "", "更改", v -> chooseSoundMode());
+        ringtoneRow = RowBuilder.add(b.behaviorRows, "系统铃声", "", "选择", v -> pickRingtone());
+        RowBuilder.add(b.behaviorRows, "试听声音", "按当前设置立即播放，不用等到点", "试听",
+                v -> previewCurrentSound());
+        RowBuilder.add(b.behaviorRows, "测试闹钟", "5 秒后按当前声音设置响一次，可按 Home 键锁屏验证", "测试", v -> {
             AlarmScheduler.scheduleTest(requireContext(), 5);
             Ui.toast(requireContext(), "5 秒后响铃，可以按 Home 或锁屏验证");
         });
@@ -193,6 +222,15 @@ public class SettingsFragment extends Fragment {
         }
         leadRow.subtitle.setText(prefs.leadMinutes() == 0 ? "准点响铃" : "提前 " + prefs.leadMinutes() + " 分钟响铃");
         snoozeRow.subtitle.setText("每次 " + prefs.snoozeMinutes() + " 分钟");
+        String ringtoneName = prefs.alarmSoundName();
+        if (ringtoneName.isEmpty()) ringtoneName = "默认闹铃（跟随系统）";
+        boolean voiceMode = AppPrefs.SOUND_VOICE.equals(prefs.soundMode());
+        soundModeRow.subtitle.setText(voiceMode
+                ? "语音播报 · 内置录音，循环播放"
+                : "系统闹铃 · " + ringtoneName);
+        ringtoneRow.subtitle.setText(voiceMode
+                ? ringtoneName + "（语音播报时不使用）"
+                : ringtoneName);
         overlayRow.subtitle.setText(Perms.canOverlay(requireContext())
                 ? "已开启：解锁时也会弹出底部提醒卡片"
                 : "需要「显示在其他应用上层」权限；不开则解锁时只显示横幅");
@@ -321,6 +359,127 @@ public class SettingsFragment extends Fragment {
                     dialog.dismiss();
                 })
                 .show();
+    }
+
+    // ---------------- 提醒声音 ----------------
+
+    private void chooseSoundMode() {
+        final String[] values = {AppPrefs.SOUND_SYSTEM, AppPrefs.SOUND_VOICE};
+        String[] labels = {"系统闹铃（可挑选铃声，或静音仅震动）",
+                "语音播报（App 内置录音，不依赖语音引擎）"};
+        int checked = AppPrefs.SOUND_VOICE.equals(prefs.soundMode()) ? 1 : 0;
+        new MaterialAlertDialogBuilder(requireContext())
+                .setTitle("提醒声音")
+                .setSingleChoiceItems(labels, checked, (dialog, which) -> {
+                    prefs.setSoundMode(values[which]);
+                    refresh();
+                    dialog.dismiss();
+                    Ui.toast(requireContext(), AppPrefs.SOUND_VOICE.equals(values[which])
+                            ? "已改为语音播报，可点「试听声音」确认"
+                            : "已改为系统闹铃");
+                })
+                .setNegativeButton("取消", null)
+                .show();
+    }
+
+    private void pickRingtone() {
+        String setting = prefs.alarmSoundUri();
+        Uri current = setting.isEmpty() || AppPrefs.RINGTONE_SILENT.equals(setting)
+                ? null : Uri.parse(setting);
+        Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER)
+                .putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_ALARM)
+                .putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, "选择闹铃声音")
+                .putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, true)
+                .putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, true)
+                .putExtra(RingtoneManager.EXTRA_RINGTONE_DEFAULT_URI,
+                        RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM))
+                .putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, current);
+        try {
+            ringtonePicker.launch(intent);
+        } catch (Exception e) {
+            Ui.toast(requireContext(), "系统没有可用的铃声选择器");
+        }
+    }
+
+    private void applyPickedRingtone(Uri uri) {
+        boolean voiceMode = AppPrefs.SOUND_VOICE.equals(prefs.soundMode());
+        if (uri == null) {
+            prefs.setAlarmSound(AppPrefs.RINGTONE_SILENT, "静音（仅震动）");
+            refresh();
+            Ui.toast(requireContext(), voiceMode
+                    ? "已保存静音设置；当前用内置语音播报，切换到系统闹铃后生效"
+                    : "已设为静音：闹钟只震动，不响铃");
+            return;
+        }
+        try {
+            requireContext().getContentResolver().takePersistableUriPermission(
+                    uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        } catch (Exception ignored) {
+            // 系统铃声多数来自只读目录，不需要（也不支持）长期授权。
+        }
+        Uri defaultUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+        if (uri.equals(defaultUri)) {
+            prefs.setAlarmSound("", "默认闹铃（跟随系统）");
+        } else {
+            prefs.setAlarmSound(uri.toString(), ringtoneTitle(uri));
+        }
+        refresh();
+        if (voiceMode) {
+            Ui.toast(requireContext(), "已保存：" + prefs.alarmSoundName()
+                    + "；当前用内置语音播报，切换到系统闹铃后生效");
+        } else {
+            Ui.toast(requireContext(), "已选择：" + prefs.alarmSoundName());
+            previewCurrentSound();
+        }
+    }
+
+    private String ringtoneTitle(Uri uri) {
+        try {
+            Ringtone ringtone = RingtoneManager.getRingtone(requireContext(), uri);
+            if (ringtone != null) {
+                String title = ringtone.getTitle(requireContext());
+                if (title != null && !title.trim().isEmpty()) return title.trim();
+            }
+        } catch (Exception ignored) {
+        }
+        return "自定义闹铃";
+    }
+
+    private void previewCurrentSound() {
+        stopPreview();
+        String setting = prefs.alarmSoundUri();
+        AlarmSound next = new AlarmSound(requireContext());
+        preview = next;
+
+        if (AppPrefs.SOUND_VOICE.equals(prefs.soundMode())) {
+            Ui.toast(requireContext(), "正在试听内置语音…");
+            next.playVoice(false);
+            main.postDelayed(stopPreviewTask, 6000);
+            return;
+        }
+
+        if (AppPrefs.RINGTONE_SILENT.equals(setting)) {
+            Ui.toast(requireContext(), "当前是静音（仅震动），没有声音可试听");
+            next.release();
+            preview = null;
+            return;
+        }
+        boolean played = next.playSystemExact(setting.isEmpty() ? null : Uri.parse(setting), false);
+        if (!played) {
+            if (!setting.isEmpty()) {
+                Ui.toast(requireContext(), "这个铃声无法播放，已改用默认闹铃");
+            }
+            next.playSystem(null, false);
+        }
+        main.postDelayed(stopPreviewTask, 6000);
+    }
+
+    private void stopPreview() {
+        main.removeCallbacks(stopPreviewTask);
+        if (preview != null) {
+            preview.release();
+            preview = null;
+        }
     }
 
     private void chooseCalendarLead() {
@@ -705,6 +864,7 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        stopPreview();
         b = null;
     }
 }

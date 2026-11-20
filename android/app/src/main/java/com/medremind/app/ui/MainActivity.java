@@ -166,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
         new MaterialAlertDialogBuilder(this)
                 .setTitle("欢迎使用吃药提醒")
                 .setMessage("这是一个本地服药闹钟：\n\n"
-                        + "⏰ 到点以闹钟方式响铃，支持全屏提醒\n"
+                        + "⏰ 到点以闹钟方式响铃，可选系统闹铃或内置语音播报\n"
                         + "👨‍👩‍👧 可为家人分别建账户，各自的药、订阅和日历互不混淆\n"
                         + "📅 可把服药计划写入系统日历，由系统日历提醒\n"
                         + "🔄 重启手机后自动恢复提醒\n\n"
